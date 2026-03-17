@@ -1,0 +1,51 @@
+---
+description: Collaboration and communication rules — clarification, explanations, TODOs, and commit discipline.
+alwaysApply: true
+---
+
+# Collaboration and Communication Rules
+
+## Ask Before Assuming
+
+If requirements conflict, are ambiguous, or a key detail is missing, ask a clarification question **before** writing any code.
+
+> Example triggers:
+> - "Should this endpoint be authenticated?"
+> - "Is the rule evaluation synchronous or via a queue?"
+> - "Should deleting an employee also delete their sessions?"
+
+Do not guess and implement — surface the ambiguity instead.
+
+## Explain Non-Obvious Decisions
+
+When a design decision isn't self-evident, add a brief comment or include a short explanation in your response.
+
+```ts
+// Using upsert here because the daily stats row may or may not exist
+// depending on whether any event was ingested earlier today.
+await this.prisma.dailyEmployeeStats.upsert({ ... });
+```
+
+Keep explanatory comments on the *why*, not the *what*. Do not narrate what the code already says.
+
+## Preserve TODOs and FIXMEs
+
+- Do not delete `TODO` or `FIXME` comments unless you have actually resolved the underlying issue.
+- If you complete a TODO, remove the marker and briefly mention it in your response.
+
+```ts
+// ❌ BAD — silently removed a TODO without doing the work
+// (no TODO here anymore, but auth was never added)
+
+// ✅ GOOD — TODO stays until auth is implemented
+// TODO: add JWT guard once AuthModule is wired up
+@Get()
+findAll() { ... }
+```
+
+## Keep Changes Commit-Sized
+
+- One logical concern per change. Do not mix a refactor, a bug fix, and a new feature in the same response.
+- If you notice an unrelated improvement while working, mention it instead of silently making the change.
+
+> "I noticed the `SessionsService` has a similar pagination pattern that could be extracted — want me to do that separately?"

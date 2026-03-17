@@ -1,0 +1,71 @@
+---
+description: Database and data-access rules — Prisma patterns, query efficiency, nullability, and transaction scope for apps/api.
+globs: apps/api/**/*.ts
+alwaysApply: false
+---
+
+# Database and Data Access Rules
+
+## Use Existing ORM Patterns
+
+Always use `PrismaService` via constructor injection. Do not write raw SQL unless explicitly requested.
+
+```ts
+// ✅ GOOD
+constructor(private readonly prisma: PrismaService) {}
+
+async findOne(id: string) {
+  return this.prisma.employee.findUnique({ where: { id } });
+}
+
+// ❌ BAD — raw query without approval
+await this.prisma.$queryRaw`SELECT * FROM employees WHERE id = ${id}`;
+```
+
+## Schema and Migrations Are Frozen
+
+- Do not add, rename, or remove models, fields, or relations in `prisma/schema.prisma`.
+- Do not create or edit files in `prisma/migrations/`.
+- Only make these changes when the user explicitly says to modify the schema.
+
+## Query Efficiency
+
+- Filter on indexed columns (`employeeId`, `sessionId`, `date + employeeId`).
+- Always paginate list queries with `take` + `skip` (or cursor-based) — never return unbounded results.
+- Use `select` to limit returned fields when the full model isn't needed.
+
+```ts
+// ✅ GOOD — paginated, projected
+return this.prisma.activityEvent.findMany({
+  where: { sessionId },
+  select: { id: true, type: true, occurredAt: true },
+  orderBy: { occurredAt: 'desc' },
+  take: limit,
+  skip: offset,
+});
+```
+
+## Transactions
+
+Keep transactions small and scoped to a single logical operation.
+
+```ts
+// ✅ GOOD — tight scope
+await this.prisma.$transaction([
+  this.prisma.session.update({ where: { id }, data: { status: 'ENDED', endedAt: new Date() } }),
+  this.prisma.dailyEmployeeStats.upsert({ ... }),
+]);
+
+// ❌ BAD — multiple unrelated writes in one transaction
+await this.prisma.$transaction([createEmployee, sendEmail, logAudit]);
+```
+
+## Nullability and Optional Fields
+
+- Respect nullable fields as defined in the schema (`String?`, `DateTime?`).
+- Always handle `null` returns from `findUnique` / `findFirst` — throw `NotFoundException` rather than letting `null` propagate.
+
+```ts
+const session = await this.prisma.session.findUnique({ where: { id } });
+if (!session) throw new NotFoundException(`Session ${id} not found`);
+```

@@ -1,0 +1,66 @@
+---
+description: NestJS backend rules — module structure, error logging, and side-effect discipline for apps/api.
+globs: apps/api/**/*.ts
+alwaysApply: false
+---
+
+# Backend Rules (NestJS / apps/api)
+
+## Module Structure
+
+Follow NestJS domain module conventions. Each domain owns its controller, service, module, and DTOs:
+
+```
+src/
+  employees/
+    employees.controller.ts
+    employees.service.ts
+    employees.module.ts
+    dto/
+      create-employee.dto.ts
+```
+
+Do not put business logic in controllers. Controllers handle HTTP concerns only; delegate everything else to services.
+
+## Schema and Migrations
+
+- **Never** modify `prisma/schema.prisma` or create migrations without explicit instruction.
+- After any schema change is approved, run `npm run db:generate` before using the new types.
+
+## Error Logging
+
+Log errors with enough context to diagnose in production, but never log secrets or raw passwords.
+
+```ts
+// ✅ GOOD
+this.logger.error('Failed to create session', {
+  employeeId,
+  error: err.message,
+});
+
+// ❌ BAD — no context
+this.logger.error(err);
+
+// ❌ BAD — logs sensitive data
+this.logger.debug({ body: request.body }); // body may contain passwords
+```
+
+Use NestJS `Logger` (`new Logger(ClassName.name)`) — do not use `console.log` in production code.
+
+## Explicit Dependencies
+
+- Inject dependencies via the constructor; do not import singletons directly.
+- Do not cause side effects in a service that the caller cannot observe or control.
+
+```ts
+// ✅ GOOD — caller controls the event emitter
+constructor(private readonly eventEmitter: EventEmitter2) {}
+
+// ❌ BAD — hidden coupling
+import { globalEventBus } from '../shared/global-bus';
+```
+
+## DTOs and Validation
+
+- Use `class-validator` decorators on all incoming DTOs.
+- Reuse types from `@repo/contracts` for response shapes when they exist.

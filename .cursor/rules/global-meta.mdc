@@ -1,0 +1,46 @@
+---
+description: Global meta-rules for how the AI agent operates in this codebase — transparency, scope, and change discipline.
+alwaysApply: true
+---
+
+# Global / Meta Rules
+
+## Applied Rules Disclosure
+
+At the start of any non-trivial implementation, briefly state which rules you are operating under. Example:
+> *Applying: global-meta, backend, database*
+
+## Respect Existing Architecture
+
+- Read and summarize the relevant files before editing. Follow their style, naming conventions, module boundaries, and abstractions.
+- Do not redesign or restructure unless explicitly asked to refactor.
+- When in doubt about a pattern, look for an existing example in the codebase and match it.
+
+```ts
+// ✅ Match what already exists
+// If services use constructor injection with PrismaService, keep doing that.
+// ❌ Don't introduce a new pattern (e.g. static methods, service locator) without discussion.
+```
+
+## Prefer Small, Focused Changes
+
+- Make the minimal change needed to satisfy the request.
+- Do not touch unrelated files, rename variables for style, or clean up code you weren't asked to change.
+- One logical concern per change set.
+
+## Do Not Invent
+
+- Do not add environment variables that don't exist in `.env.example`.
+- Do not invent API contracts, field names, or business rules.
+- If something is ambiguous or missing, **ask before guessing**.
+
+## Preserve Existing Contracts
+
+- Do not rename or remove exported functions, classes, or types unless explicitly approved.
+- Do not delete or reword comments unless you've resolved what they described.
+- Do not remove `TODO` or `FIXME` markers unless the work is actually done.
+
+## Simplicity First
+
+- Prefer simple, readable solutions over clever abstractions.
+- Do not add a new abstraction layer unless it removes clear duplication or the user asks for it.
