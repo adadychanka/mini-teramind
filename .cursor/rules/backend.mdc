@@ -64,3 +64,4 @@ import { globalEventBus } from '../shared/global-bus';
 
 - Use `class-validator` decorators on all incoming DTOs.
 - Reuse types from `@repo/contracts` for response shapes when they exist.
+- The Swagger CLI plugin is enabled with `introspectComments: true` — JSDoc on DTO properties and controller methods auto-populates `@ApiProperty` / `@ApiOperation`. Write JSDoc instead of duplicating in decorators.

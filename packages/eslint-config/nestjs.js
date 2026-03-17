@@ -45,8 +45,6 @@ export const nestJsConfig = [
   },
   // NestJS-specific rules: DI patterns, decorator correctness, DTO validation
   eslintNestJs.configs.flatRecommended,
-  // Disable Swagger rules — project does not use @nestjs/swagger
-  eslintNestJs.configs.flatNoSwagger,
   {
     rules: {
       // Allow `any` in NestJS — common in interceptors, pipes, guards
