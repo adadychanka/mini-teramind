@@ -1,0 +1,37 @@
+---
+description: Documentation layout and conventions for this project.
+alwaysApply: true
+---
+
+# Documentation Rules
+
+## Where docs live
+
+- High-level project overview stays in `README.md`.
+- Detailed, step-by-step guides and operational runbooks live under the `docs/` folder.
+- App-specific docs stay close to the app when it adds useful context (for example `apps/api/README.md` for backend architecture and endpoints).
+
+## Current docs tree
+
+```text
+docs/
+  local-development.md   # Single source of truth for running the stack locally
+```
+
+When you add new documentation:
+
+- Prefer adding a new Markdown file in `docs/` (or a subfolder like `docs/backend/`) instead of bloating the root `README.md`.
+- Keep each doc focused (e.g. `local-development`, `backend-architecture`, `deployment-notes`), not a giant catch‑all.
+
+## Avoid duplication
+
+- Do **not** copy the same instructions into multiple places.
+- If something in `README.md` would duplicate `docs/local-development.md`, link to the doc instead.
+- When changing a workflow (e.g. how to run the API), update **only** the canonical doc and adjust links if needed.
+
+## Style and tone
+
+- Use `##` and `###` headings, short paragraphs, and lists.
+- Prefer concrete commands and examples over abstract description.
+- Document **what** to do and **why it matters**; avoid narrating implementation details that can be read directly from the code.
+

@@ -25,49 +25,11 @@ mini-teramind/
 └── package.json
 ```
 
-## Prerequisites
+## Local development
 
-- Node.js >= 18
-- npm >= 10
-- Docker (for the PostgreSQL database)
+See the local development guide for step-by-step instructions to run the full stack (Docker, Prisma, API, and web app):
 
-## Quick Start
-
-### 1. Install dependencies
-
-```bash
-npm install
-```
-
-### 2. Start PostgreSQL
-
-```bash
-docker compose up -d
-```
-
-### 3. Configure environment
-
-```bash
-# API environment (DATABASE_URL and PORT)
-cp apps/api/.env.example apps/api/.env
-```
-
-### 4. Run database migrations
-
-```bash
-cd apps/api && npm run db:migrate:dev
-```
-
-### 5. Start all apps in development mode
-
-```bash
-turbo dev
-```
-
-| App | URL |
-|---|---|
-| API | http://localhost:3001 |
-| Web | http://localhost:3000 |
+- `docs/local-development.md`
 
 ## Apps
 
@@ -89,27 +51,6 @@ React dashboard for viewing employees, drilling into per-employee activity, and 
 | `@repo/ui` | Shared React component library |
 | `@repo/eslint-config` | ESLint configurations (Next.js, React, base) |
 | `@repo/typescript-config` | Shared `tsconfig` bases |
-
-## Common Commands
-
-```bash
-# Run all apps in dev mode
-turbo dev
-
-# Build all apps and packages
-turbo build
-
-# Run all linters
-turbo lint
-
-# Type-check everything
-turbo check-types
-
-# Database (run from apps/api)
-npm run db:migrate:dev      # create + apply migration
-npm run db:generate         # regenerate Prisma client
-npm run db:studio           # open Prisma Studio GUI
-```
 
 ## Tech Stack
 
