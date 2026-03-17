@@ -72,21 +72,27 @@ Scope is intentionally narrow so it can be implemented in 1–2 weeks but still 
 ### 3.1 Entities & Data Model (Conceptual)
 
 **Employee**
+
 - `id` (UUID), `name`, `email`, `department`, `createdAt`, `updatedAt`.
 
 **Session**
+
 - `id` (UUID), `employeeId` (FK → Employee), `startedAt`, `endedAt` (nullable), `status` (`ACTIVE`, `ENDED`), `createdAt`, `updatedAt`.
 
 **ActivityEvent**
+
 - `id` (UUID), `sessionId` (FK → Session), `type` (`APP`, `WEB`, `FILE`, `KEYSTROKE_SUMMARY`), `metadata` (JSON), `occurredAt`, `createdAt`.
 
 **Rule**
+
 - `id` (UUID), `name`, `description`, `type` (`BLOCKED_WEBSITE`, `AFTER_HOURS`), `config` (JSON), `severity` (`LOW`, `MEDIUM`, `HIGH`), `active` (boolean), `createdAt`, `updatedAt`.
 
 **Alert**
+
 - `id` (UUID), `employeeId` (FK → Employee), `sessionId` (FK → Session, nullable), `ruleId` (FK → Rule), `detectedAt`, `status` (`OPEN`, `CLOSED`), `details` (JSON), `createdAt`, `updatedAt`.
 
 **DailyEmployeeStats**
+
 - `id` (UUID), `date`, `employeeId` (FK → Employee), `totalActiveMinutes`, `totalEvents`, `totalAlerts`, `eventsByType` (JSON), `createdAt`, `updatedAt`.
 
 ### 3.2 User Flows (API Level)
@@ -263,6 +269,7 @@ DTOs and response types should reuse contracts where possible.
 Use NestJS event emitter or similar.
 
 **`EventCreated` event** → Listener updates `DailyEmployeeStats`:
+
 - Increment `totalEvents` and `eventsByType[type]`.
 - If event implies session end, add to `totalActiveMinutes`.
 
@@ -298,10 +305,12 @@ alerts(filter: AlertFilterInput): [Alert!]!
 #### 5.3.1 Pages
 
 **`/employees`**
+
 - Uses `GET /employees` (+ summary information).
 - Table with: `name`, `department`, `totalSessions`, `totalAlerts`.
 
 **`/employees/[id]`**
+
 - Uses `GET /employees/:id/summary`, `GET /employees/:id/daily-stats`, `GET /alerts?employeeId=...`.
 - Sections:
   - Employee header.
@@ -310,6 +319,7 @@ alerts(filter: AlertFilterInput): [Alert!]!
   - Alerts table.
 
 **`/alerts`**
+
 - Uses `GET /alerts` with query params.
 - Filters by severity, status, date range, employee.
 - Types imported from `@mini-teramind/contracts`.
@@ -319,19 +329,23 @@ alerts(filter: AlertFilterInput): [Alert!]!
 ## 6. Non‑Functional Requirements
 
 **Performance:**
+
 - DB indexes on `session.employeeId`, `event.sessionId`, `alert.employeeId`, `(dailyStats.date, employeeId)`.
 - Pagination on list endpoints.
 
 **Security:**
+
 - Auth (API key/JWT) on non‑public endpoints.
 - Minimal PII.
 
 **Code Quality:**
+
 - Shared ESLint/Prettier config at root.
 - Tests for rule engine and stats.
 - 1–2 e2e tests.
 
 **CI** – Root GitHub Actions workflow:
+
 - Install dependencies (workspace).
 - Run backend tests.
 - Build backend + frontend (optional).
@@ -342,9 +356,9 @@ alerts(filter: AlertFilterInput): [Alert!]!
 
 Assuming ~2–3h / day:
 
-| Phase | Days | Tasks |
-|-------|------|-------|
-| Core | 1–5 | Monorepo setup, backend core (Employees, Sessions, Events, Rules, Alerts, Stats, REST) |
-| Polish | 6–7 | Rule engine, projections, auth, tests |
-| GraphQL (optional) | 8–9 | GraphQL layer |
-| Frontend (optional) | 10–12 | Next.js dashboard (employees, detail page, alerts page) |
+| Phase               | Days  | Tasks                                                                                  |
+| ------------------- | ----- | -------------------------------------------------------------------------------------- |
+| Core                | 1–5   | Monorepo setup, backend core (Employees, Sessions, Events, Rules, Alerts, Stats, REST) |
+| Polish              | 6–7   | Rule engine, projections, auth, tests                                                  |
+| GraphQL (optional)  | 8–9   | GraphQL layer                                                                          |
+| Frontend (optional) | 10–12 | Next.js dashboard (employees, detail page, alerts page)                                |
