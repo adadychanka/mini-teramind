@@ -30,6 +30,8 @@ Start it:
 docker compose up -d
 ```
 
+In case of errors around blocked docker progress on MacOS, check this: https://github.com/docker/for-mac/issues/7520
+
 Optional: check container status:
 
 ```bash
