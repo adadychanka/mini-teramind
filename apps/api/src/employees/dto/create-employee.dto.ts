@@ -1,11 +1,5 @@
 import { CreateEmployeeDto as ICreateEmployeeDto } from '@repo/contracts';
-import {
-  IsEmail,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  MaxLength,
-} from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
 
 /**
  * API DTO for creating an employee.

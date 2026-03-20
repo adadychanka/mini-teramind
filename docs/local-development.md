@@ -147,14 +147,13 @@ npm run format
 
 ## 9. Troubleshooting
 
-- **Database connection errors**  
+- **Database connection errors**
   - Ensure Docker is running and `docker compose up -d` succeeded.
   - Check `DATABASE_URL` in `apps/api/.env`.
 
-- **Health check failing** (`/health`)  
+- **Health check failing** (`/health`)
   - Confirms database and memory indicators; use the JSON response to see which indicator is down.
 
-- **Swagger not loading** (`/docs`)  
+- **Swagger not loading** (`/docs`)
   - Check API logs for bootstrap errors.
   - Ensure `@nestjs/swagger` is installed and the app started without TypeScript build errors.
-

@@ -45,20 +45,20 @@ React dashboard for viewing employees, drilling into per-employee activity, and 
 
 ## Shared Packages
 
-| Package | Purpose |
-|---|---|
-| `@repo/contracts` | Shared TypeScript interfaces for all domain entities |
-| `@repo/ui` | Shared React component library |
-| `@repo/eslint-config` | ESLint configurations (Next.js, React, base) |
-| `@repo/typescript-config` | Shared `tsconfig` bases |
+| Package                   | Purpose                                              |
+| ------------------------- | ---------------------------------------------------- |
+| `@repo/contracts`         | Shared TypeScript interfaces for all domain entities |
+| `@repo/ui`                | Shared React component library                       |
+| `@repo/eslint-config`     | ESLint configurations (Next.js, React, base)         |
+| `@repo/typescript-config` | Shared `tsconfig` bases                              |
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Monorepo | Turborepo + npm workspaces |
-| Backend | NestJS 11, TypeScript |
-| Database | PostgreSQL 16 (Docker) |
-| ORM | Prisma |
-| Frontend | Next.js 16, React 19 |
+| Layer        | Technology                                    |
+| ------------ | --------------------------------------------- |
+| Monorepo     | Turborepo + npm workspaces                    |
+| Backend      | NestJS 11, TypeScript                         |
+| Database     | PostgreSQL 16 (Docker)                        |
+| ORM          | Prisma                                        |
+| Frontend     | Next.js 16, React 19                          |
 | Shared types | TypeScript interfaces in `packages/contracts` |
