@@ -1,0 +1,36 @@
+---
+description: API response shape conventions for NestJS controllers
+globs: apps/api/src/**/*.ts
+alwaysApply: true
+---
+
+# API Response Conventions
+
+Use simple, consistent HTTP response shapes from controllers.
+
+## Success response shapes
+
+- Detail endpoints (`GET /resource/:id`) return a single object.
+- Create endpoints (`POST /resource`) return the created object (status `201`).
+- List endpoints return an object with:
+  - `items`: array of resources
+  - `total`: total matching resources
+
+```ts
+// ✅ Detail
+return employee;
+
+// ✅ List
+return { items, total };
+```
+
+## Avoid mixed/enveloped patterns by default
+
+- Do not wrap all responses in `{ data: ... }` unless explicitly requested.
+- Keep shape consistent across endpoints in the same module.
+
+## Error handling alignment
+
+- Controllers define HTTP contract and Swagger responses.
+- Services throw typed exceptions (`NotFoundException`, `ConflictException`, etc.).
+- Do not convert known typed errors into generic 500 responses in controllers.

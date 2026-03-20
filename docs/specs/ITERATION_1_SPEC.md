@@ -151,7 +151,7 @@ Requirements:
     - active (boolean).
   - Type‑specific config (stored as JSON):
     - BLOCKED_WEBSITE:
-      - pattern: string (e.g., "facebook.com" or "*.social.com").
+      - pattern: string (e.g., "facebook.com" or "\*.social.com").
     - AFTER_HOURS:
       - workHours: with start and end (e.g., "09:00", "18:00").
       - timezone: string (e.g., "Europe/Belgrade").

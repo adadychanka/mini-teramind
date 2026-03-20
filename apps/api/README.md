@@ -4,13 +4,13 @@ NestJS backend for the Mini Teramind employee activity monitoring platform.
 
 ## Tech Stack
 
-| Concern | Technology |
-|---|---|
-| Framework | NestJS 11 (TypeScript) |
-| Database | PostgreSQL 16 (Docker) |
-| ORM | Prisma |
-| Config | `@nestjs/config` / `.env` |
-| API style | REST (GraphQL optional) |
+| Concern   | Technology                |
+| --------- | ------------------------- |
+| Framework | NestJS 11 (TypeScript)    |
+| Database  | PostgreSQL 16 (Docker)    |
+| ORM       | Prisma                    |
+| Config    | `@nestjs/config` / `.env` |
+| API style | REST (GraphQL optional)   |
 
 ## Architecture
 
@@ -40,13 +40,13 @@ EventsModule
 
 Six entities persisted in PostgreSQL:
 
-| Entity | Key fields |
-|---|---|
-| `Employee` | id, name, email, department |
-| `Session` | id, employeeId, startedAt, endedAt, status |
-| `ActivityEvent` | id, sessionId, type, metadata (JSON), occurredAt |
-| `Rule` | id, name, type, config (JSON), severity, active |
-| `Alert` | id, employeeId, sessionId, ruleId, detectedAt, status |
+| Entity               | Key fields                                                                       |
+| -------------------- | -------------------------------------------------------------------------------- |
+| `Employee`           | id, name, email, department                                                      |
+| `Session`            | id, employeeId, startedAt, endedAt, status                                       |
+| `ActivityEvent`      | id, sessionId, type, metadata (JSON), occurredAt                                 |
+| `Rule`               | id, name, type, config (JSON), severity, active                                  |
+| `Alert`              | id, employeeId, sessionId, ruleId, detectedAt, status                            |
 | `DailyEmployeeStats` | id, date, employeeId, totalActiveMinutes, totalEvents, totalAlerts, eventsByType |
 
 Schema: [`prisma/schema.prisma`](prisma/schema.prisma)
@@ -54,6 +54,7 @@ Schema: [`prisma/schema.prisma`](prisma/schema.prisma)
 ## REST API Endpoints
 
 ### Employees & Sessions
+
 ```
 POST   /employees
 GET    /employees
@@ -64,12 +65,14 @@ GET    /sessions/:id
 ```
 
 ### Activity Events
+
 ```
 POST   /sessions/:id/events
 GET    /sessions/:id/events
 ```
 
 ### Rules
+
 ```
 POST   /rules
 GET    /rules
@@ -77,12 +80,14 @@ PATCH  /rules/:id
 ```
 
 ### Alerts
+
 ```
 GET    /alerts
 PATCH  /alerts/:id
 ```
 
 ### Analytics
+
 ```
 GET    /employees/:id/summary
 GET    /employees/:id/daily-stats
@@ -130,23 +135,23 @@ The API listens on `http://localhost:3001`.
 
 ## Available Scripts
 
-| Script | Description |
-|---|---|
-| `dev` | Start in watch mode |
-| `build` | Compile to `dist/` (runs `prisma generate` first) |
-| `start:prod` | Run compiled output |
-| `db:generate` | Regenerate Prisma client after schema changes |
-| `db:migrate:dev` | Create and apply a new migration (dev) |
-| `db:migrate:deploy` | Apply pending migrations (production) |
-| `db:push` | Push schema directly to DB without a migration file |
-| `db:studio` | Open Prisma Studio GUI |
-| `lint` | Run ESLint |
-| `test` | Run unit tests |
-| `test:e2e` | Run end-to-end tests |
+| Script              | Description                                         |
+| ------------------- | --------------------------------------------------- |
+| `dev`               | Start in watch mode                                 |
+| `build`             | Compile to `dist/` (runs `prisma generate` first)   |
+| `start:prod`        | Run compiled output                                 |
+| `db:generate`       | Regenerate Prisma client after schema changes       |
+| `db:migrate:dev`    | Create and apply a new migration (dev)              |
+| `db:migrate:deploy` | Apply pending migrations (production)               |
+| `db:push`           | Push schema directly to DB without a migration file |
+| `db:studio`         | Open Prisma Studio GUI                              |
+| `lint`              | Run ESLint                                          |
+| `test`              | Run unit tests                                      |
+| `test:e2e`          | Run end-to-end tests                                |
 
 ## Environment Variables
 
-| Variable | Default | Description |
-|---|---|---|
+| Variable       | Default                                                                 | Description              |
+| -------------- | ----------------------------------------------------------------------- | ------------------------ |
 | `DATABASE_URL` | `postgresql://mini_teramind:mini_teramind@localhost:5432/mini_teramind` | Prisma connection string |
-| `PORT` | `3001` | HTTP port |
+| `PORT`         | `3001`                                                                  | HTTP port                |
