@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { EmployeeDto, type PaginationOutputDto } from '@repo/contracts';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
@@ -54,9 +54,11 @@ export class EmployeesService {
     };
   }
 
-  async findOne(id: number): Promise<EmployeeDto> {
-    // throw NotFoundException if employee not found
-    // throw new NotFoundException(`Employee not found`);
-    return Promise.resolve(mockEmployee);
+  async findOne(id: string): Promise<EmployeeDto> {
+    const employee = await this.prisma.employee.findUnique({ where: { id } });
+    if (!employee) {
+      throw new NotFoundException('Employee not found');
+    }
+    return toEmployeeDto(employee);
   }
 }

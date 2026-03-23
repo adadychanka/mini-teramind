@@ -6,7 +6,7 @@ import {
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiQuery,
-  ApiTags,
+  ApiTags
 } from '@nestjs/swagger';
 import { type EmployeeDto, type PaginationOutputDto } from '@repo/contracts';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
@@ -55,6 +55,6 @@ export class EmployeesController {
   @ApiNotFoundResponse({ description: 'Employee not found' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   async findOne(@Param('id') id: string) {
-    return await this.employeesService.findOne(+id);
+    return await this.employeesService.findOne(id);
   }
 }
