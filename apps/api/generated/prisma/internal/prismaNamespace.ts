@@ -374,7 +374,9 @@ export type FieldRef<Model, FieldType> = runtime.FieldRef<Model, FieldType>;
 
 type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRef<Model, FieldType>;
 
-export const ModelName = {} as const;
+export const ModelName = {
+  Employee: 'Employee',
+} as const;
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
 
@@ -393,10 +395,85 @@ export type TypeMap<
     omit: GlobalOmitOptions;
   };
   meta: {
-    modelProps: never;
+    modelProps: 'employee';
     txIsolationLevel: TransactionIsolationLevel;
   };
-  model: {};
+  model: {
+    Employee: {
+      payload: Prisma.$EmployeePayload<ExtArgs>;
+      fields: Prisma.EmployeeFieldRefs;
+      operations: {
+        findUnique: {
+          args: Prisma.EmployeeFindUniqueArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeePayload> | null;
+        };
+        findUniqueOrThrow: {
+          args: Prisma.EmployeeFindUniqueOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeePayload>;
+        };
+        findFirst: {
+          args: Prisma.EmployeeFindFirstArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeePayload> | null;
+        };
+        findFirstOrThrow: {
+          args: Prisma.EmployeeFindFirstOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeePayload>;
+        };
+        findMany: {
+          args: Prisma.EmployeeFindManyArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeePayload>[];
+        };
+        create: {
+          args: Prisma.EmployeeCreateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeePayload>;
+        };
+        createMany: {
+          args: Prisma.EmployeeCreateManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        createManyAndReturn: {
+          args: Prisma.EmployeeCreateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeePayload>[];
+        };
+        delete: {
+          args: Prisma.EmployeeDeleteArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeePayload>;
+        };
+        update: {
+          args: Prisma.EmployeeUpdateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeePayload>;
+        };
+        deleteMany: {
+          args: Prisma.EmployeeDeleteManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        updateMany: {
+          args: Prisma.EmployeeUpdateManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        updateManyAndReturn: {
+          args: Prisma.EmployeeUpdateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeePayload>[];
+        };
+        upsert: {
+          args: Prisma.EmployeeUpsertArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmployeePayload>;
+        };
+        aggregate: {
+          args: Prisma.EmployeeAggregateArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.AggregateEmployee>;
+        };
+        groupBy: {
+          args: Prisma.EmployeeGroupByArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.EmployeeGroupByOutputType>[];
+        };
+        count: {
+          args: Prisma.EmployeeCountArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.EmployeeCountAggregateOutputType> | number;
+        };
+      };
+    };
+  };
 } & {
   other: {
     payload: any;
@@ -434,6 +511,73 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 
 export type TransactionIsolationLevel =
   (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel];
+
+export const EmployeeScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  department: 'department',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+} as const;
+
+export type EmployeeScalarFieldEnum =
+  (typeof EmployeeScalarFieldEnum)[keyof typeof EmployeeScalarFieldEnum];
+
+export const SortOrder = {
+  asc: 'asc',
+  desc: 'desc',
+} as const;
+
+export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder];
+
+export const QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive',
+} as const;
+
+export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode];
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last',
+} as const;
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder];
+
+/**
+ * Field references
+ */
+
+/**
+ * Reference to a field of type 'String'
+ */
+export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String'>;
+
+/**
+ * Reference to a field of type 'String[]'
+ */
+export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>;
+
+/**
+ * Reference to a field of type 'DateTime'
+ */
+export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>;
+
+/**
+ * Reference to a field of type 'DateTime[]'
+ */
+export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>;
+
+/**
+ * Reference to a field of type 'Int'
+ */
+export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>;
+
+/**
+ * Reference to a field of type 'Int[]'
+ */
+export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>;
 
 /**
  * Batch Payload for updateMany & deleteMany & createMany
@@ -537,7 +681,9 @@ export type PrismaClientOptions = (
    */
   comments?: runtime.SqlCommenterPlugin[];
 };
-export type GlobalOmitConfig = {};
+export type GlobalOmitConfig = {
+  employee?: Prisma.EmployeeOmit;
+};
 
 /* Types for Logging */
 export type LogLevel = 'info' | 'query' | 'warn' | 'error';

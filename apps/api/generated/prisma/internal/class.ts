@@ -19,7 +19,7 @@ const config: runtime.GetPrismaClientConfig = {
   engineVersion: '280c870be64f457428992c43c1f6d557fab6e29e',
   activeProvider: 'postgresql',
   inlineSchema:
-    'generator client {\n  provider     = "prisma-client"\n  output       = "../generated/prisma"\n  moduleFormat = "cjs"\n}\n\ndatasource db {\n  provider = "postgresql"\n}\n',
+    'generator client {\n  provider     = "prisma-client"\n  output       = "../generated/prisma"\n  moduleFormat = "cjs"\n}\n\ndatasource db {\n  provider = "postgresql"\n}\n\nmodel Employee {\n  id         String   @id @default(uuid())\n  name       String   @db.VarChar(255)\n  email      String   @unique @db.VarChar(255)\n  department String?  @db.VarChar(255)\n  createdAt  DateTime @default(now())\n  updatedAt  DateTime @updatedAt\n}\n',
   runtimeDataModel: {
     models: {},
     enums: {},
@@ -31,10 +31,15 @@ const config: runtime.GetPrismaClientConfig = {
   },
 };
 
-config.runtimeDataModel = JSON.parse('{"models":{},"enums":{},"types":{}}');
+config.runtimeDataModel = JSON.parse(
+  '{"models":{"Employee":{"fields":[{"name":"id","kind":"scalar","type":"String"},{"name":"name","kind":"scalar","type":"String"},{"name":"email","kind":"scalar","type":"String"},{"name":"department","kind":"scalar","type":"String"},{"name":"createdAt","kind":"scalar","type":"DateTime"},{"name":"updatedAt","kind":"scalar","type":"DateTime"}],"dbName":null}},"enums":{},"types":{}}',
+);
 config.parameterizationSchema = {
-  strings: JSON.parse('[]'),
-  graph: 'AAAA',
+  strings: JSON.parse(
+    '["where","Employee.findUnique","Employee.findUniqueOrThrow","orderBy","cursor","Employee.findFirst","Employee.findFirstOrThrow","Employee.findMany","data","Employee.createOne","Employee.createMany","Employee.createManyAndReturn","Employee.updateOne","Employee.updateMany","Employee.updateManyAndReturn","create","update","Employee.upsertOne","Employee.deleteOne","Employee.deleteMany","having","_count","_min","_max","Employee.groupBy","Employee.aggregate","AND","OR","NOT","id","name","email","department","createdAt","updatedAt","equals","in","notIn","lt","lte","gt","gte","not","contains","startsWith","endsWith","set"]',
+  ),
+  graph:
+    'MAkQCRoAACYAMBsAAAQAEBwAACYAMB0BAAAAAR4BACcAIR8BAAAAASABACgAISFAACkAISJAACkAIQEAAAABACABAAAAAQAgCRoAACYAMBsAAAQAEBwAACYAMB0BACcAIR4BACcAIR8BACcAISABACgAISFAACkAISJAACkAIQEgAAAqACADAAAABAAgAwAABQAwBAAAAQAgAwAAAAQAIAMAAAUAMAQAAAEAIAMAAAAEACADAAAFADAEAAABACAGHQEAAAABHgEAAAABHwEAAAABIAEAAAABIUAAAAABIkAAAAABAQgAAAkAIAYdAQAAAAEeAQAAAAEfAQAAAAEgAQAAAAEhQAAAAAEiQAAAAAEBCAAACwAwAQgAAAsAMAYdAQAuACEeAQAuACEfAQAuACEgAQAvACEhQAAwACEiQAAwACECAAAAAQAgCAAADgAgBh0BAC4AIR4BAC4AIR8BAC4AISABAC8AISFAADAAISJAADAAIQIAAAAEACAIAAAQACACAAAABAAgCAAAEAAgAwAAAAEAIA8AAAkAIBAAAA4AIAEAAAABACABAAAABAAgBBUAACsAIBYAAC0AIBcAACwAICAAACoAIAkaAAAaADAbAAAXABAcAAAaADAdAQAbACEeAQAbACEfAQAbACEgAQAcACEhQAAdACEiQAAdACEDAAAABAAgAwAAFgAwFAAAFwAgAwAAAAQAIAMAAAUAMAQAAAEAIAkaAAAaADAbAAAXABAcAAAaADAdAQAbACEeAQAbACEfAQAbACEgAQAcACEhQAAdACEiQAAdACEOFQAAHwAgFgAAJQAgFwAAJQAgIwEAAAABJAEAAAAEJQEAAAAEJgEAAAABJwEAAAABKAEAAAABKQEAAAABKgEAJAAhKwEAAAABLAEAAAABLQEAAAABDhUAACIAIBYAACMAIBcAACMAICMBAAAAASQBAAAABSUBAAAABSYBAAAAAScBAAAAASgBAAAAASkBAAAAASoBACEAISsBAAAAASwBAAAAAS0BAAAAAQsVAAAfACAWAAAgACAXAAAgACAjQAAAAAEkQAAAAAQlQAAAAAQmQAAAAAEnQAAAAAEoQAAAAAEpQAAAAAEqQAAeACELFQAAHwAgFgAAIAAgFwAAIAAgI0AAAAABJEAAAAAEJUAAAAAEJkAAAAABJ0AAAAABKEAAAAABKUAAAAABKkAAHgAhCCMCAAAAASQCAAAABCUCAAAABCYCAAAAAScCAAAAASgCAAAAASkCAAAAASoCAB8AIQgjQAAAAAEkQAAAAAQlQAAAAAQmQAAAAAEnQAAAAAEoQAAAAAEpQAAAAAEqQAAgACEOFQAAIgAgFgAAIwAgFwAAIwAgIwEAAAABJAEAAAAFJQEAAAAFJgEAAAABJwEAAAABKAEAAAABKQEAAAABKgEAIQAhKwEAAAABLAEAAAABLQEAAAABCCMCAAAAASQCAAAABSUCAAAABSYCAAAAAScCAAAAASgCAAAAASkCAAAAASoCACIAIQsjAQAAAAEkAQAAAAUlAQAAAAUmAQAAAAEnAQAAAAEoAQAAAAEpAQAAAAEqAQAjACErAQAAAAEsAQAAAAEtAQAAAAEOFQAAHwAgFgAAJQAgFwAAJQAgIwEAAAABJAEAAAAEJQEAAAAEJgEAAAABJwEAAAABKAEAAAABKQEAAAABKgEAJAAhKwEAAAABLAEAAAABLQEAAAABCyMBAAAAASQBAAAABCUBAAAABCYBAAAAAScBAAAAASgBAAAAASkBAAAAASoBACUAISsBAAAAASwBAAAAAS0BAAAAAQkaAAAmADAbAAAEABAcAAAmADAdAQAnACEeAQAnACEfAQAnACEgAQAoACEhQAApACEiQAApACELIwEAAAABJAEAAAAEJQEAAAAEJgEAAAABJwEAAAABKAEAAAABKQEAAAABKgEAJQAhKwEAAAABLAEAAAABLQEAAAABCyMBAAAAASQBAAAABSUBAAAABSYBAAAAAScBAAAAASgBAAAAASkBAAAAASoBACMAISsBAAAAASwBAAAAAS0BAAAAAQgjQAAAAAEkQAAAAAQlQAAAAAQmQAAAAAEnQAAAAAEoQAAAAAEpQAAAAAEqQAAgACEAAAAAAS4BAAAAAQEuAQAAAAEBLkAAAAABAAAAAAMVAAYWAAcXAAgAAAADFQAGFgAHFwAIAQIBAgMBBQYBBgcBBwgBCQoBCgwCCw0DDA8BDRECDhIEERMBEhQBExUCGBgFGRkJ',
 };
 
 async function decodeBase64AsWasm(wasmBase64: string): Promise<WebAssembly.Module> {
@@ -73,8 +78,8 @@ export interface PrismaClientConstructor {
    * const prisma = new PrismaClient({
    *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
    * })
-   * // Fetch zero or more Users
-   * const users = await prisma.user.findMany()
+   * // Fetch zero or more Employees
+   * const employees = await prisma.employee.findMany()
    * ```
    *
    * Read more in our [docs](https://pris.ly/d/client).
@@ -101,8 +106,8 @@ export interface PrismaClientConstructor {
  * const prisma = new PrismaClient({
  *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
  * })
- * // Fetch zero or more Users
- * const users = await prisma.user.findMany()
+ * // Fetch zero or more Employees
+ * const employees = await prisma.employee.findMany()
  * ```
  *
  * Read more in our [docs](https://pris.ly/d/client).
@@ -221,6 +226,16 @@ export interface PrismaClient<
       }
     >
   >;
+
+  /**
+   * `prisma.employee`: Exposes CRUD operations for the **Employee** model.
+   * Example usage:
+   * ```ts
+   * // Fetch zero or more Employees
+   * const employees = await prisma.employee.findMany()
+   * ```
+   */
+  get employee(): Prisma.EmployeeDelegate<ExtArgs, { omit: OmitOpts }>;
 }
 
 export function getPrismaClientClass(): PrismaClientConstructor {
