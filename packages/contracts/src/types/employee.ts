@@ -5,7 +5,7 @@ export interface EmployeeDto {
   id: string;
   name: string;
   email: string;
-  department?: string;
+  department?: string | null;
   createdAt: string;
   updatedAt: string;
 }
