@@ -1,0 +1,3 @@
+export const DEFAULT_EMPLOYEES_PER_PAGE = 100;
+
+export const MAX_EMPLOYEES_PER_PAGE = 1000;

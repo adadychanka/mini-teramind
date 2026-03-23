@@ -8,12 +8,9 @@ import {
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
-import {
-  type EmployeeDto,
-  type PaginationInputDto,
-  type PaginationOutputDto,
-} from '@repo/contracts';
+import { type EmployeeDto, type PaginationOutputDto } from '@repo/contracts';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
+import { PaginationQueryDto } from './dto/pagination-query.dto';
 import { EmployeesService } from './employees.service';
 
 @ApiTags('employees')
@@ -30,18 +27,25 @@ export class EmployeesController {
   }
 
   @Get()
-  @ApiQuery({ name: 'page', type: Number, required: true, default: 1 })
   @ApiQuery({
-    name: 'limit',
     type: Number,
+    name: 'page',
+    required: true,
+    description: 'Page number',
+    default: 1,
+  })
+  @ApiQuery({
+    type: Number,
+    name: 'limit',
     required: true,
     description: 'Number of employees per page',
     default: 100,
   })
   @ApiOkResponse({ description: 'Employees retrieved successfully' })
+  @ApiBadRequestResponse({ description: 'Invalid request data' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   async findAll(
-    @Query() paginationInputDto: PaginationInputDto,
+    @Query() paginationInputDto: PaginationQueryDto,
   ): Promise<PaginationOutputDto<EmployeeDto>> {
     return await this.employeesService.findAll(paginationInputDto);
   }
