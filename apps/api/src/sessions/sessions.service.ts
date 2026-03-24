@@ -1,8 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PaginationOutputDto, SessionDto, SessionStatus } from '@repo/contracts';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { PaginationQueryDto } from '../common/pagination/pagination-query.dto';
 import { CreateSessionDto } from './dto/create-session.dto';
 import { UpdateSessionDto } from './dto/update-session.dto';
+import { toSessionDto } from './sessions.mapper';
 
 const mockedSession: SessionDto = {
   id: '1',
@@ -16,6 +18,8 @@ const mockedSession: SessionDto = {
 
 @Injectable()
 export class SessionsService {
+  constructor(private readonly prisma: PrismaService) {}
+
   async create(createSessionDto: CreateSessionDto): Promise<SessionDto> {
     return Promise.resolve({
       ...mockedSession,
@@ -47,9 +51,16 @@ export class SessionsService {
   }
 
   async findOne(sessionId: string): Promise<SessionDto> {
-    return Promise.resolve({
-      ...mockedSession,
-      id: sessionId,
+    const session = await this.prisma.session.findUnique({
+      where: {
+        id: sessionId,
+      },
     });
+
+    if (!session) {
+      throw new NotFoundException('Session not found');
+    }
+
+    return toSessionDto(session);
   }
 }
