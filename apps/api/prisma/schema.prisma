@@ -15,4 +15,27 @@ model Employee {
   department String?  @db.VarChar(255)
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+
+  sessions Session[]
+}
+
+enum SessionStatus {
+  ACTIVE
+  ENDED
+}
+
+model Session {
+  id        String    @id @default(uuid())
+  startedAt DateTime  @default(now())
+  endedAt   DateTime?
+
+  status SessionStatus @default(ACTIVE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  employeeId String
+  employee   Employee @relation(fields: [employeeId], references: [id])
+
+  @@index([employeeId, startedAt(sort: Desc)])
 }
