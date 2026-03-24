@@ -1,0 +1,6 @@
+export const PRISMA_ERROR_CODES = {
+  UNIQUE_CONSTRAINT_VIOLATION: 'P2002',
+  FOREIGN_KEY_CONSTRAINT_VIOLATION: 'P2003',
+} as const;
+
+export type PrismaErrorCode = (typeof PRISMA_ERROR_CODES)[keyof typeof PRISMA_ERROR_CODES];

@@ -1,12 +1,13 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiConflictResponse,
   ApiCreatedResponse,
   ApiInternalServerErrorResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiQuery,
-  ApiTags
+  ApiTags,
 } from '@nestjs/swagger';
 import { type EmployeeDto, type PaginationOutputDto } from '@repo/contracts';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
@@ -21,9 +22,10 @@ export class EmployeesController {
   @Post()
   @ApiCreatedResponse({ description: 'Employee created successfully' })
   @ApiBadRequestResponse({ description: 'Invalid request data' })
+  @ApiConflictResponse({ description: 'Employee with this email already exists' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   async create(@Body() createEmployeeDto: CreateEmployeeDto) {
-    return await this.employeesService.create(createEmployeeDto);
+    return this.employeesService.create(createEmployeeDto);
   }
 
   @Get()
