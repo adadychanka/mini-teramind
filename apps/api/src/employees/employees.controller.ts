@@ -6,12 +6,13 @@ import {
   ApiInternalServerErrorResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
+  ApiOperation,
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
 import { type EmployeeDto, type PaginationOutputDto } from '@repo/contracts';
+import { PaginationQueryDto } from '../common/pagination/pagination-query.dto';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
-import { PaginationQueryDto } from './dto/pagination-query.dto';
 import { EmployeesService } from './employees.service';
 
 @ApiTags('employees')
@@ -20,6 +21,7 @@ export class EmployeesController {
   constructor(private readonly employeesService: EmployeesService) {}
 
   @Post()
+  @ApiOperation({ summary: 'Create an employee' })
   @ApiCreatedResponse({ description: 'Employee created successfully' })
   @ApiBadRequestResponse({ description: 'Invalid request data' })
   @ApiConflictResponse({ description: 'Employee with this email already exists' })
@@ -29,6 +31,7 @@ export class EmployeesController {
   }
 
   @Get()
+  @ApiOperation({ summary: 'Get all employees' })
   @ApiQuery({
     type: Number,
     name: 'page',
@@ -53,6 +56,7 @@ export class EmployeesController {
   }
 
   @Get(':id')
+  @ApiOperation({ summary: 'Get an employee by ID' })
   @ApiOkResponse({ description: 'Employee retrieved successfully' })
   @ApiNotFoundResponse({ description: 'Employee not found' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })

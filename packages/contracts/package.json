@@ -4,12 +4,17 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": {
+      "default": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
   },
   "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "check-types": "tsc --noEmit",
+    "clean": "rm -rf dist",
     "format": "prettier --write \"src/**/*.ts\"",
-    "lint": "eslint . --fix",
-    "check-types": "tsc --noEmit"
+    "lint": "eslint . --fix"
   },
   "devDependencies": {
     "@repo/eslint-config": "*",

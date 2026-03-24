@@ -6,8 +6,8 @@ import {
   isUniqueConstraintViolationError,
 } from 'src/common/prisma/prisma-error-helpers';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { PaginationQueryDto } from '../common/pagination/pagination-query.dto';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
-import { PaginationQueryDto } from './dto/pagination-query.dto';
 import { DEFAULT_EMPLOYEES_PER_PAGE } from './employees.constants';
 import { toEmployeeDto } from './employees.mapper';
 
