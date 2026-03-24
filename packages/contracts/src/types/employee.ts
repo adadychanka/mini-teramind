@@ -23,6 +23,7 @@ export interface CreateEmployeeDto {
  * Contract DTO for updating an employee.
  */
 export interface UpdateEmployeeDto {
+  id: string;
   name?: string;
   email?: string;
   department?: string;
