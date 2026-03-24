@@ -1,28 +1,46 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { EmployeeDto, type PaginationOutputDto } from '@repo/contracts';
+import { normalizeEmail } from 'src/common/email/normalize-email';
+import {
+  isFieldError,
+  isUniqueConstraintViolationError,
+} from 'src/common/prisma/prisma-error-helpers';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { PaginationQueryDto } from './dto/pagination-query.dto';
 import { DEFAULT_EMPLOYEES_PER_PAGE } from './employees.constants';
 import { toEmployeeDto } from './employees.mapper';
 
-const mockEmployee: EmployeeDto = {
-  id: '1',
-  name: 'John Doe',
-  email: 'john.doe@example.com',
-  department: 'IT',
-  createdAt: new Date().toISOString(),
-  updatedAt: new Date().toISOString(),
-};
-
 @Injectable()
 export class EmployeesService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createEmployeeDto: CreateEmployeeDto): Promise<EmployeeDto> {
-    // throw ConflictException if employee already exists
-    // throw new ConflictException(`Employee already exists`);
-    return Promise.resolve(mockEmployee);
+    try {
+      const result = await this.prisma.employee.create({
+        data: {
+          name: createEmployeeDto.name,
+          email: normalizeEmail(createEmployeeDto.email),
+          department: createEmployeeDto.department,
+        },
+      });
+
+      return toEmployeeDto(result);
+    } catch (error) {
+      // Validate unique constraint violation errors
+      if (isUniqueConstraintViolationError(error)) {
+        const isEmailFieldViolation = isFieldError(error, 'email');
+
+        if (isEmailFieldViolation) {
+          throw new ConflictException('Employee with this email already exists');
+        }
+
+        throw new ConflictException('Unique constraint violation');
+      }
+
+      // Re-throw other errors
+      throw error;
+    }
   }
 
   async findAll(paginationInputDto: PaginationQueryDto): Promise<PaginationOutputDto<EmployeeDto>> {
