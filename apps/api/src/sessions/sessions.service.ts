@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PaginationOutputDto, SessionDto, SessionStatus } from '@repo/contracts';
+import { DEFAULT_PAGINATION_LIMIT } from 'src/common/pagination/limits';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { PaginationQueryDto } from '../common/pagination/pagination-query.dto';
 import { CreateSessionDto } from './dto/create-session.dto';
@@ -34,26 +35,80 @@ export class SessionsService {
     });
   }
 
+  /**
+   * Get all sessions for an employee.
+   * @param employeeId - The ID of the employee to get the sessions for.
+   * @param paginationInputDto - The pagination input dto.
+   * @returns The pagination output dto.
+   * @throws NotFoundException if the employee is not found.
+   */
   async findAllSessionsByEmployeeId(
     employeeId: string,
     paginationInputDto: PaginationQueryDto,
   ): Promise<PaginationOutputDto<SessionDto>> {
-    return Promise.resolve({
-      items: [
-        {
-          ...mockedSession,
-          employeeId,
-        },
-      ],
-      total: 1,
-      hasNextPage: false,
+    const employee = await this.prisma.employee.findUnique({
+      where: {
+        id: employeeId,
+      },
+      select: {
+        id: true,
+      },
     });
+
+    if (!employee) {
+      throw new NotFoundException('Employee not found');
+    }
+
+    const { page = 1, limit = DEFAULT_PAGINATION_LIMIT } = paginationInputDto;
+    const skip = (page - 1) * limit;
+
+    const sessions = await this.prisma.session.findMany({
+      where: {
+        employeeId,
+      },
+      skip,
+      take: limit,
+      orderBy: {
+        startedAt: 'desc',
+      },
+      select: {
+        id: true,
+        startedAt: true,
+        endedAt: true,
+        status: true,
+        createdAt: true,
+        updatedAt: true,
+        employeeId: true,
+      },
+    });
+
+    const sessionDtos = sessions.map(toSessionDto);
+    const total = await this.prisma.session.count({
+      where: {
+        employeeId,
+      },
+    });
+    const hasNextPage = page * limit < total;
+    return {
+      items: sessionDtos,
+      total,
+      hasNextPage,
+    };
   }
 
   async findOne(sessionId: string): Promise<SessionDto> {
     const session = await this.prisma.session.findUnique({
       where: {
         id: sessionId,
+      },
+      select: {
+        id: true,
+        startedAt: true,
+        endedAt: true,
+        status: true,
+        createdAt: true,
+        updatedAt: true,
+        employeeId: true,
       },
     });
 
