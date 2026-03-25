@@ -16,6 +16,8 @@ alwaysApply: true
 ```text
 docs/
   local-development.md   # Single source of truth for running the stack locally
+  backend/                 # Implemented backend decisions (employees, sessions, schema)
+    README.md
 ```
 
 When you add new documentation:

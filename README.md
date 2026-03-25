@@ -31,6 +31,8 @@ See the local development guide for step-by-step instructions to run the full st
 
 - `docs/local-development.md`
 
+Backend decisions and implemented behavior (employees, sessions, schema): `docs/backend/README.md`
+
 ## Apps
 
 ### `apps/api` — NestJS Backend
