@@ -36,6 +36,12 @@ export const isForeignKeyConstraintViolationError = (
   return isPrismaError(error, PRISMA_ERROR_CODES.FOREIGN_KEY_CONSTRAINT_VIOLATION);
 };
 
+export const isRecordNotFoundError = (
+  error: unknown,
+): error is Prisma.PrismaClientKnownRequestError => {
+  return isPrismaError(error, PRISMA_ERROR_CODES.RECORD_NOT_FOUND);
+};
+
 /**
  * Try to get the field that caused the error from the meta data of the error.
  * @param meta - The meta data of the error
