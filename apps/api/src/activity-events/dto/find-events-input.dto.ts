@@ -1,19 +1,18 @@
-import { IsDateString, IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import { IsDateString, IsOptional, IsString } from 'class-validator';
 import { PaginationQueryDto } from 'src/common/pagination/pagination-query.dto';
 
 export class FindEventsInputDto extends PaginationQueryDto {
-  @IsUUID()
   @IsString()
-  @IsNotEmpty()
-  sessionId!: string;
+  @IsDateString()
+  @IsOptional()
+  from?: string;
 
   @IsString()
   @IsDateString()
-  @IsNotEmpty()
-  from!: string;
+  @IsOptional()
+  to?: string;
 
   @IsString()
-  @IsDateString()
-  @IsNotEmpty()
-  to!: string;
+  @IsOptional()
+  eventType?: string;
 }
