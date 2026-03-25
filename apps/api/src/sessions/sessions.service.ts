@@ -96,6 +96,12 @@ export class SessionsService {
     };
   }
 
+  /**
+   * Get a session by ID.
+   * @param sessionId - The ID of the session to get.
+   * @returns The session dto.
+   * @throws NotFoundException if the session is not found.
+   */
   async findOne(sessionId: string): Promise<SessionDto> {
     const session = await this.prisma.session.findUnique({
       where: {
