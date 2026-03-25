@@ -1,10 +1,15 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { PaginationOutputDto, SessionDto, SessionStatus } from '@repo/contracts';
 import { DEFAULT_PAGINATION_LIMIT } from 'src/common/pagination/limits';
+import {
+  isForeignKeyConstraintViolationError,
+  isUniqueConstraintViolationError,
+} from 'src/common/prisma/prisma-error-helpers';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { PaginationQueryDto } from '../common/pagination/pagination-query.dto';
 import { CreateSessionDto } from './dto/create-session.dto';
 import { UpdateSessionDto } from './dto/update-session.dto';
+import { createActiveSession } from './sessions.helpers';
 import { toSessionDto } from './sessions.mapper';
 
 const mockedSession: SessionDto = {
@@ -21,14 +26,57 @@ const mockedSession: SessionDto = {
 export class SessionsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(createSessionDto: CreateSessionDto): Promise<SessionDto> {
-    return Promise.resolve({
-      ...mockedSession,
-      employeeId: createSessionDto.employeeId,
+  /**
+   * Create a new session for an employee.
+   * @param createSessionDto - The create session dto.
+   * @returns The session dto.
+   * @throws NotFoundException if the employee is not found.
+   * @throws ConflictException if the employee already has an active session.
+   */
+  async startSessionForEmployee(createSessionDto: CreateSessionDto): Promise<SessionDto> {
+    const employee = await this.prisma.employee.findUnique({
+      where: {
+        id: createSessionDto.employeeId,
+      },
+      select: {
+        id: true,
+      },
     });
+    if (!employee) {
+      throw new NotFoundException('Employee not found');
+    }
+
+    const activeSession = createActiveSession(createSessionDto);
+    try {
+      const session = await this.prisma.session.create({
+        data: {
+          ...activeSession,
+        },
+        select: {
+          id: true,
+          startedAt: true,
+          endedAt: true,
+          status: true,
+          createdAt: true,
+          updatedAt: true,
+          employeeId: true,
+        },
+      });
+
+      return toSessionDto(session);
+    } catch (error) {
+      if (isUniqueConstraintViolationError(error)) {
+        throw new ConflictException('Employee already has an active session');
+      }
+      if (isForeignKeyConstraintViolationError(error)) {
+        throw new NotFoundException('Employee not found');
+      }
+
+      throw error;
+    }
   }
 
-  async end(updateSessionDto: UpdateSessionDto): Promise<SessionDto> {
+  async endSession(updateSessionDto: UpdateSessionDto): Promise<SessionDto> {
     return Promise.resolve({
       ...mockedSession,
       ...updateSessionDto,
@@ -102,7 +150,7 @@ export class SessionsService {
    * @returns The session dto.
    * @throws NotFoundException if the session is not found.
    */
-  async findOne(sessionId: string): Promise<SessionDto> {
+  async findSessionById(sessionId: string): Promise<SessionDto> {
     const session = await this.prisma.session.findUnique({
       where: {
         id: sessionId,
