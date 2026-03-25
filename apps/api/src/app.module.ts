@@ -7,6 +7,7 @@ import { EmployeesModule } from './employees/employees.module';
 import { HealthModule } from './health/health.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { SessionsModule } from './sessions/sessions.module';
+import { ActivityEventsModule } from './activity-events/activity-events.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { SessionsModule } from './sessions/sessions.module';
     HealthModule,
     EmployeesModule,
     SessionsModule,
+    ActivityEventsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
