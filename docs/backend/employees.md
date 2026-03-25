@@ -9,7 +9,7 @@ The platform treats an **employee** as a monitored person whose activity is trac
 | Method | Path | Body / query | Success response |
 |--------|------|--------------|------------------|
 | `POST` | `/employees` | JSON body: `name`, `email`, optional `department` | Single `EmployeeDto` (`201` implied by create; controller returns body as created resource per Nest convention) |
-| `GET` | `/employees` | Query: `page`, `limit` (required by `PaginationQueryDto`) | `PaginationOutputDto<EmployeeDto>`: `{ items, total, hasNextPage }` |
+| `GET` | `/employees` | Query: `page`, `limit` (required by `PaginationQueryDto`) | `PaginationOutputDto<EmployeeDto>`: `{ items, total, hasNextPage }` — `items` ordered by `createdAt` **descending** (newest first) |
 | `GET` | `/employees/:id` | Path: `id` | Single `EmployeeDto` |
 
 Types: `@repo/contracts` (`EmployeeDto`, `CreateEmployeeDto`, `PaginationOutputDto`, `PaginationInputDto`).
@@ -36,6 +36,6 @@ Employees are stored in the `Employee` table. Constraints and migration history:
 
 ### Edge cases and known limitations
 
-- **List ordering**: `findMany` does **not** specify `orderBy`, so page membership and order are **not stable** across requests or database implementations. Clients should not assume sort order.
+- **List ordering**: `findAll` uses `orderBy: { createdAt: 'desc' }`, so pagination order is **stable** for a given dataset (newest employees first). Rows that share the same `createdAt` may still appear in database-defined order within that tie.
 - **No update/delete** endpoints for employees in the current codebase.
 - Service defaults: `findAll` uses `page = 1` and `limit = DEFAULT_EMPLOYEES_PER_PAGE` (100, from shared pagination limits) if fields were ever missing; HTTP layer still requires valid query DTO.
