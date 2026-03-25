@@ -1,0 +1,38 @@
+---
+description: Structure and conventions for docs/backend decision documents
+globs: docs/backend/**/*.md
+alwaysApply: false
+---
+
+# Backend decision docs (`docs/backend/`)
+
+## Required layout
+
+Do **not** reorder or remove the top-level `##` sections defined for each file type. Add detail only under the listed `###` headings (or deeper).
+
+### Index — `README.md`
+
+Use exactly: `## Purpose` → `## Contents` → `## Source of truth and precedence` → `## Keeping docs up to date`.
+
+### Domain docs — `employees.md`, `sessions.md` (and future `*.md` per domain)
+
+Use exactly:
+
+1. `## Product context (vision)` — Short tie-in to [docs/specs/SPEC.md](../specs/SPEC.md); **intent only**, no “shipped” endpoint list unless clearly labeled as vision.
+2. `## Implemented behavior` with:
+   - `### API surface`
+   - `### Validation and errors`
+   - `### Persistence` (brief + link to [schema-and-migrations.md](schema-and-migrations.md); avoid duplicating SQL)
+   - `### Mapping and contracts`
+   - `### Edge cases and known limitations`
+
+### Schema — `schema-and-migrations.md`
+
+Use exactly: `## Scope` → `## Prisma models` → `## Migration timeline` → `## Constraints and indexes` → `## Operational notes`.
+
+## Conventions
+
+- **Implemented vs vision**: Behavior that exists in `apps/api` belongs under `## Implemented behavior`. SPEC is for “why,” not proof something runs.
+- **Link SPEC**: Do not paste large excerpts; link [SPEC.md](../specs/SPEC.md) / [ITERATION_1_SPEC.md](../specs/ITERATION_1_SPEC.md).
+- **Repo docs**: Follow [.cursor/rules/docs.mdc](docs.mdc) (focused files; do not replace `docs/local-development.md` or bloat root `README.md` with duplicated runbooks).
+- **New domain file**: Follow the domain template above and add it to `README.md` → `## Contents`.
