@@ -30,17 +30,24 @@ export function createActiveSession(createSessionDto: {
  * @returns The ended session data for the database.
  *
  * @example
- * const endedSession = createEndedSession({ id: '123', employeeId: '123' });
- * // { id: '123', endedAt: new Date(), status: 'ENDED', employeeId: '123' }
+ * const endedSession = createEndedSession({ id: '123' });
+ * // { id: '123', endedAt: new Date(), status: 'ENDED' }
  */
 export function createEndedSession(updateSessionDto: {
   id: string;
-  employeeId: string;
-}): Pick<Session, 'id' | 'endedAt' | 'status' | 'employeeId'> {
+}): Pick<Session, 'id' | 'endedAt' | 'status'> {
   return {
     id: updateSessionDto.id,
     endedAt: new Date(),
     status: SessionStatus.ENDED,
-    employeeId: updateSessionDto.employeeId,
   };
+}
+
+/**
+ * Check if a session is ended.
+ * @param session - The session to check.
+ * @returns True if the session is ended, false otherwise.
+ */
+export function isEndedSession(session: { status: SessionStatus }): boolean {
+  return session.status === SessionStatus.ENDED;
 }

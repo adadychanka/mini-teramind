@@ -1,26 +1,22 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { PaginationOutputDto, SessionDto, SessionStatus } from '@repo/contracts';
 import { DEFAULT_PAGINATION_LIMIT } from 'src/common/pagination/limits';
 import {
   isForeignKeyConstraintViolationError,
+  isRecordNotFoundError,
   isUniqueConstraintViolationError,
 } from 'src/common/prisma/prisma-error-helpers';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { PaginationQueryDto } from '../common/pagination/pagination-query.dto';
 import { CreateSessionDto } from './dto/create-session.dto';
 import { UpdateSessionDto } from './dto/update-session.dto';
-import { createActiveSession } from './sessions.helpers';
+import { createActiveSession, createEndedSession, isEndedSession } from './sessions.helpers';
 import { toSessionDto } from './sessions.mapper';
-
-const mockedSession: SessionDto = {
-  id: '1',
-  employeeId: '1',
-  startedAt: new Date().toISOString(),
-  endedAt: null,
-  status: SessionStatus.ACTIVE,
-  createdAt: new Date().toISOString(),
-  updatedAt: new Date().toISOString(),
-};
 
 @Injectable()
 export class SessionsService {
@@ -76,11 +72,65 @@ export class SessionsService {
     }
   }
 
+  /**
+   * End a session.
+   * @param updateSessionDto - The update session dto.
+   * @returns The session dto. If the session is already ended, the existing session is returned.
+   * @throws NotFoundException if the session is not found.
+   */
   async endSession(updateSessionDto: UpdateSessionDto): Promise<SessionDto> {
-    return Promise.resolve({
-      ...mockedSession,
-      ...updateSessionDto,
-    });
+    try {
+      const endedSessionInput = createEndedSession(updateSessionDto);
+      const updatedSession = await this.prisma.session.update({
+        where: {
+          id: updateSessionDto.id,
+          status: SessionStatus.ACTIVE,
+        },
+        data: endedSessionInput,
+        select: {
+          id: true,
+          startedAt: true,
+          endedAt: true,
+          status: true,
+          createdAt: true,
+          updatedAt: true,
+          employeeId: true,
+        },
+      });
+
+      return toSessionDto(updatedSession);
+    } catch (error) {
+      if (isRecordNotFoundError(error)) {
+        const alreadyEndedSession = await this.prisma.session.findUnique({
+          where: {
+            id: updateSessionDto.id,
+          },
+          select: {
+            id: true,
+            startedAt: true,
+            endedAt: true,
+            status: true,
+            createdAt: true,
+            updatedAt: true,
+            employeeId: true,
+          },
+        });
+        if (!alreadyEndedSession) {
+          throw new NotFoundException(`Session ${updateSessionDto.id} not found`);
+        }
+
+        // If the session is already ended, return the existing session.
+        if (isEndedSession(alreadyEndedSession)) {
+          return toSessionDto(alreadyEndedSession);
+        }
+
+        throw new InternalServerErrorException('Failed to end session', {
+          cause: error,
+        });
+      }
+
+      throw error;
+    }
   }
 
   /**

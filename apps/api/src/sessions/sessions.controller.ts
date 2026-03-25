@@ -17,7 +17,10 @@ export class SessionsController {
 
   @Patch(':id')
   @ApiOperation({ summary: 'End a session' })
-  @ApiOkResponse({ description: 'Session ended successfully' })
+  @ApiOkResponse({
+    description:
+      'Session ended successfully. If the session is already ended, the existing session is returned.',
+  })
   @ApiNotFoundResponse({ description: 'Session not found' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   async endSession(@Param('id') id: string): Promise<SessionDto> {
