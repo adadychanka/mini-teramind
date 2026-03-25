@@ -1,8 +1,16 @@
-import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import { IsDateString, IsNotEmpty, IsObject, IsString } from 'class-validator';
 
 export class CreateActivityEventDto {
-  @IsUUID()
   @IsString()
   @IsNotEmpty()
-  sessionId!: string;
+  eventType!: string;
+
+  @IsString()
+  @IsDateString()
+  @IsNotEmpty()
+  occurredAt!: string;
+
+  @IsObject()
+  @IsNotEmpty()
+  metadata!: Record<string, any>;
 }

@@ -8,11 +8,14 @@ import { CreateActivityEventDto } from './dto/create-activity-event.dto';
 export class ActivityEventsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(createActivityEventDto: CreateActivityEventDto): Promise<object> {
+  async createActivityEvent(
+    sessionId: string,
+    createActivityEventDto: CreateActivityEventDto,
+  ): Promise<object> {
     return Promise.resolve({});
   }
 
-  async findAll(
+  async findAllActivityEvents(
     sessionId: string,
     paginationInputDto: PaginationQueryDto,
   ): Promise<PaginationOutputDto<object>> {

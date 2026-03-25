@@ -25,8 +25,11 @@ export class ActivityEventsController {
   @ApiNotFoundResponse({ description: 'Session not found' })
   @ApiBadRequestResponse({ description: 'Invalid request data' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
-  async create(@Body() createActivityEventDto: CreateActivityEventDto) {
-    return this.activityEventsService.create(createActivityEventDto);
+  async create(
+    @Param('sessionId') sessionId: string,
+    @Body() createActivityEventDto: CreateActivityEventDto,
+  ) {
+    return await this.activityEventsService.createActivityEvent(sessionId, createActivityEventDto);
   }
 
   @Get('events')
@@ -48,14 +51,20 @@ export class ActivityEventsController {
   @ApiQuery({
     type: String,
     name: 'from',
-    required: true,
+    required: false,
     description: 'Start date',
   })
   @ApiQuery({
     type: String,
     name: 'to',
-    required: true,
+    required: false,
     description: 'End date',
+  })
+  @ApiQuery({
+    type: String,
+    name: 'eventType',
+    required: false,
+    description: 'Event type',
   })
   @ApiOkResponse({ description: 'Activity events retrieved successfully' })
   @ApiNotFoundResponse({ description: 'Session not found' })
@@ -64,6 +73,6 @@ export class ActivityEventsController {
     @Param('sessionId') sessionId: string,
     @Query() findEventsInputDto: FindEventsInputDto,
   ): Promise<PaginationOutputDto<object>> {
-    return await this.activityEventsService.findAll(sessionId, findEventsInputDto);
+    return await this.activityEventsService.findAllActivityEvents(sessionId, findEventsInputDto);
   }
 }
