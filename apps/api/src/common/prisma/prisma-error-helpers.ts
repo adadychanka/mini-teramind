@@ -26,6 +26,17 @@ export const isUniqueConstraintViolationError = (
 };
 
 /**
+ * Verify if the error is a foreign key constraint violation error.
+ * @param error - The error to check
+ * @returns True if the error is a foreign key constraint violation error, false otherwise
+ */
+export const isForeignKeyConstraintViolationError = (
+  error: unknown,
+): error is Prisma.PrismaClientKnownRequestError => {
+  return isPrismaError(error, PRISMA_ERROR_CODES.FOREIGN_KEY_CONSTRAINT_VIOLATION);
+};
+
+/**
  * Try to get the field that caused the error from the meta data of the error.
  * @param meta - The meta data of the error
  * @param field - The field to check

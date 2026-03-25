@@ -27,7 +27,7 @@ export class SessionsController {
       endedAt: new Date().toISOString(),
     };
 
-    return await this.sessionsService.end(updateSessionDto);
+    return await this.sessionsService.endSession(updateSessionDto);
   }
 
   @Get(':id')
@@ -36,6 +36,6 @@ export class SessionsController {
   @ApiNotFoundResponse({ description: 'Session not found' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   async findOne(@Param('id') id: string): Promise<SessionDto> {
-    return await this.sessionsService.findOne(id);
+    return await this.sessionsService.findSessionById(id);
   }
 }

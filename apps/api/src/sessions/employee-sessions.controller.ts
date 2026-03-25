@@ -22,6 +22,7 @@ export class EmployeeSessionsController {
 
   @Post()
   @ApiOperation({ summary: 'Create a session for an employee' })
+  @ApiNotFoundResponse({ description: 'Employee not found' })
   @ApiCreatedResponse({ description: 'Session created successfully' })
   @ApiConflictResponse({ description: 'Employee already has an active session' })
   @ApiBadRequestResponse({ description: 'Invalid request data' })
@@ -29,7 +30,7 @@ export class EmployeeSessionsController {
   async createSession(@Param('employeeId') employeeId: string): Promise<SessionDto> {
     const createSessionDto: CreateSessionDto = { employeeId };
 
-    return this.sessionsService.create(createSessionDto);
+    return this.sessionsService.startSessionForEmployee(createSessionDto);
   }
 
   @Get()
