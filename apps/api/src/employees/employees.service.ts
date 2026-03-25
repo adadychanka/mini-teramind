@@ -57,6 +57,9 @@ export class EmployeesService {
         createdAt: true,
         updatedAt: true,
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
       skip,
       take: limit,
     });
