@@ -48,24 +48,26 @@ export class EmployeesService {
 
     const skip = (page - 1) * limit;
 
-    const employees = await this.prisma.employee.findMany({
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        department: true,
-        createdAt: true,
-        updatedAt: true,
-      },
-      orderBy: {
-        createdAt: 'desc',
-      },
-      skip,
-      take: limit,
-    });
+    const [employees, total] = await Promise.all([
+      this.prisma.employee.findMany({
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          department: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+        skip,
+        take: limit,
+      }),
+      this.prisma.employee.count(),
+    ]);
     const employeeDtos = employees.map(toEmployeeDto);
 
-    const total = await this.prisma.employee.count();
     const hasNextPage = page * limit < total;
 
     return {
