@@ -1,4 +1,5 @@
-import { IsDateString, IsOptional, IsString } from 'class-validator';
+import { ActivityEventType } from '@repo/contracts';
+import { IsDateString, IsEnum, IsOptional, IsString } from 'class-validator';
 import { PaginationQueryDto } from 'src/common/pagination/pagination-query.dto';
 import { IsDateRangeValid } from 'src/common/validators/isDateRangeValidDecorator';
 
@@ -16,7 +17,7 @@ export class FindEventsInputDto extends PaginationQueryDto {
   @IsOptional()
   to?: string;
 
-  @IsString()
+  @IsEnum(ActivityEventType)
   @IsOptional()
-  eventType?: string;
+  eventType?: ActivityEventType;
 }
