@@ -1,11 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { ActivityEventDto, PaginationOutputDto } from '@repo/contracts';
+import { ActivityEventDto, ActivityEventType, PaginationOutputDto } from '@repo/contracts';
 import { Prisma } from 'generated/prisma/client';
-import { PaginationQueryDto } from 'src/common/pagination/pagination-query.dto';
+import { DEFAULT_PAGINATION_LIMIT } from 'src/common/pagination/limits';
 import { isForeignKeyConstraintViolationError } from 'src/common/prisma/prisma-error-helpers';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { toActivityEventDto } from './activity-events.mapper';
 import { CreateActivityEventDto } from './dto/create-activity-event.dto';
+import { FindEventsInputDto } from './dto/find-events-input.dto';
 
 @Injectable()
 export class ActivityEventsService {
@@ -57,12 +58,32 @@ export class ActivityEventsService {
 
   async findAllActivityEvents(
     sessionId: string,
-    paginationInputDto: PaginationQueryDto,
-  ): Promise<PaginationOutputDto<object>> {
-    return Promise.resolve({
-      items: [],
-      total: 0,
+    paginationInputDto: FindEventsInputDto,
+  ): Promise<PaginationOutputDto<ActivityEventDto>> {
+    const { page = 1, limit = DEFAULT_PAGINATION_LIMIT, from, to, eventType } = paginationInputDto;
+    const skip = (page - 1) * limit;
+
+    const activityEvents = await this.prisma.activityEvent.findMany({
+      where: {
+        sessionId,
+        occurredAt: {
+          gte: from,
+          lte: to,
+        },
+        type: eventType
+          ? {
+              equals: eventType as ActivityEventType,
+            }
+          : undefined,
+      },
+      skip,
+      take: limit,
+    });
+
+    return {
+      items: activityEvents.map(toActivityEventDto),
+      total: activityEvents.length,
       hasNextPage: false,
-    } satisfies PaginationOutputDto<object>);
+    };
   }
 }
