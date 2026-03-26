@@ -63,39 +63,57 @@ export class ActivityEventsService {
     const { page = 1, limit = DEFAULT_PAGINATION_LIMIT, from, to, eventType } = paginationInputDto;
     const skip = (page - 1) * limit;
 
-    const activityEvents = await this.prisma.activityEvent.findMany({
-      where: {
-        sessionId,
-        occurredAt: {
-          gte: from,
-          lte: to,
+    const [activityEvents, total] = await Promise.all([
+      this.prisma.activityEvent.findMany({
+        where: {
+          sessionId,
+          occurredAt: {
+            gte: from,
+            lte: to,
+          },
+          type: eventType
+            ? {
+                equals: eventType,
+              }
+            : undefined,
         },
-        type: eventType
-          ? {
-              equals: eventType,
-            }
-          : undefined,
-      },
-      skip,
-      take: limit,
-      orderBy: {
-        occurredAt: 'desc',
-      },
-      select: {
-        id: true,
-        type: true,
-        metadata: true,
-        sessionId: true,
-        occurredAt: true,
-        createdAt: true,
-        updatedAt: true,
-      },
-    });
+        skip,
+        take: limit,
+        orderBy: {
+          occurredAt: 'desc',
+        },
+        select: {
+          id: true,
+          type: true,
+          metadata: true,
+          sessionId: true,
+          occurredAt: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      }),
+      this.prisma.activityEvent.count({
+        where: {
+          sessionId,
+          occurredAt: {
+            gte: from,
+            lte: to,
+          },
+          type: eventType
+            ? {
+                equals: eventType,
+              }
+            : undefined,
+        },
+      }),
+    ]);
 
+    const activityEventDtos = activityEvents.map(toActivityEventDto);
+    const hasNextPage = page * limit < total;
     return {
-      items: activityEvents.map(toActivityEventDto),
-      total: activityEvents.length,
-      hasNextPage: false,
+      items: activityEventDtos,
+      total,
+      hasNextPage,
     };
   }
 }

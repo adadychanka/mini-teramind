@@ -160,32 +160,34 @@ export class SessionsService {
     const { page = 1, limit = DEFAULT_PAGINATION_LIMIT } = paginationInputDto;
     const skip = (page - 1) * limit;
 
-    const sessions = await this.prisma.session.findMany({
-      where: {
-        employeeId,
-      },
-      skip,
-      take: limit,
-      orderBy: {
-        startedAt: 'desc',
-      },
-      select: {
-        id: true,
-        startedAt: true,
-        endedAt: true,
-        status: true,
-        createdAt: true,
-        updatedAt: true,
-        employeeId: true,
-      },
-    });
+    const [sessions, total] = await Promise.all([
+      this.prisma.session.findMany({
+        where: {
+          employeeId,
+        },
+        skip,
+        take: limit,
+        orderBy: {
+          startedAt: 'desc',
+        },
+        select: {
+          id: true,
+          startedAt: true,
+          endedAt: true,
+          status: true,
+          createdAt: true,
+          updatedAt: true,
+          employeeId: true,
+        },
+      }),
+      this.prisma.session.count({
+        where: {
+          employeeId,
+        },
+      }),
+    ]);
 
     const sessionDtos = sessions.map(toSessionDto);
-    const total = await this.prisma.session.count({
-      where: {
-        employeeId,
-      },
-    });
     const hasNextPage = page * limit < total;
     return {
       items: sessionDtos,
