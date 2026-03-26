@@ -52,7 +52,7 @@ export class EmployeesController {
   async findAll(
     @Query() paginationInputDto: PaginationQueryDto,
   ): Promise<PaginationOutputDto<EmployeeDto>> {
-    return await this.employeesService.findAll(paginationInputDto);
+    return this.employeesService.findAll(paginationInputDto);
   }
 
   @Get(':id')
@@ -61,6 +61,6 @@ export class EmployeesController {
   @ApiNotFoundResponse({ description: 'Employee not found' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   async findOne(@Param('id') id: string) {
-    return await this.employeesService.findOne(id);
+    return this.employeesService.findOne(id);
   }
 }
