@@ -199,6 +199,7 @@ export type SessionWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Session"> | Date | string
   employeeId?: Prisma.StringFilter<"Session"> | string
   employee?: Prisma.XOR<Prisma.EmployeeScalarRelationFilter, Prisma.EmployeeWhereInput>
+  activityEvents?: Prisma.ActivityEventListRelationFilter
 }
 
 export type SessionOrderByWithRelationInput = {
@@ -210,6 +211,7 @@ export type SessionOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   employeeId?: Prisma.SortOrder
   employee?: Prisma.EmployeeOrderByWithRelationInput
+  activityEvents?: Prisma.ActivityEventOrderByRelationAggregateInput
 }
 
 export type SessionWhereUniqueInput = Prisma.AtLeast<{
@@ -224,6 +226,7 @@ export type SessionWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"Session"> | Date | string
   employeeId?: Prisma.StringFilter<"Session"> | string
   employee?: Prisma.XOR<Prisma.EmployeeScalarRelationFilter, Prisma.EmployeeWhereInput>
+  activityEvents?: Prisma.ActivityEventListRelationFilter
 }, "id">
 
 export type SessionOrderByWithAggregationInput = {
@@ -260,6 +263,7 @@ export type SessionCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   employee: Prisma.EmployeeCreateNestedOneWithoutSessionsInput
+  activityEvents?: Prisma.ActivityEventCreateNestedManyWithoutSessionInput
 }
 
 export type SessionUncheckedCreateInput = {
@@ -270,6 +274,7 @@ export type SessionUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   employeeId: string
+  activityEvents?: Prisma.ActivityEventUncheckedCreateNestedManyWithoutSessionInput
 }
 
 export type SessionUpdateInput = {
@@ -280,6 +285,7 @@ export type SessionUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   employee?: Prisma.EmployeeUpdateOneRequiredWithoutSessionsNestedInput
+  activityEvents?: Prisma.ActivityEventUpdateManyWithoutSessionNestedInput
 }
 
 export type SessionUncheckedUpdateInput = {
@@ -290,6 +296,7 @@ export type SessionUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   employeeId?: Prisma.StringFieldUpdateOperationsInput | string
+  activityEvents?: Prisma.ActivityEventUncheckedUpdateManyWithoutSessionNestedInput
 }
 
 export type SessionCreateManyInput = {
@@ -361,6 +368,11 @@ export type SessionMinOrderByAggregateInput = {
   employeeId?: Prisma.SortOrder
 }
 
+export type SessionScalarRelationFilter = {
+  is?: Prisma.SessionWhereInput
+  isNot?: Prisma.SessionWhereInput
+}
+
 export type SessionCreateNestedManyWithoutEmployeeInput = {
   create?: Prisma.XOR<Prisma.SessionCreateWithoutEmployeeInput, Prisma.SessionUncheckedCreateWithoutEmployeeInput> | Prisma.SessionCreateWithoutEmployeeInput[] | Prisma.SessionUncheckedCreateWithoutEmployeeInput[]
   connectOrCreate?: Prisma.SessionCreateOrConnectWithoutEmployeeInput | Prisma.SessionCreateOrConnectWithoutEmployeeInput[]
@@ -411,6 +423,20 @@ export type EnumSessionStatusFieldUpdateOperationsInput = {
   set?: $Enums.SessionStatus
 }
 
+export type SessionCreateNestedOneWithoutActivityEventsInput = {
+  create?: Prisma.XOR<Prisma.SessionCreateWithoutActivityEventsInput, Prisma.SessionUncheckedCreateWithoutActivityEventsInput>
+  connectOrCreate?: Prisma.SessionCreateOrConnectWithoutActivityEventsInput
+  connect?: Prisma.SessionWhereUniqueInput
+}
+
+export type SessionUpdateOneRequiredWithoutActivityEventsNestedInput = {
+  create?: Prisma.XOR<Prisma.SessionCreateWithoutActivityEventsInput, Prisma.SessionUncheckedCreateWithoutActivityEventsInput>
+  connectOrCreate?: Prisma.SessionCreateOrConnectWithoutActivityEventsInput
+  upsert?: Prisma.SessionUpsertWithoutActivityEventsInput
+  connect?: Prisma.SessionWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SessionUpdateToOneWithWhereWithoutActivityEventsInput, Prisma.SessionUpdateWithoutActivityEventsInput>, Prisma.SessionUncheckedUpdateWithoutActivityEventsInput>
+}
+
 export type SessionCreateWithoutEmployeeInput = {
   id?: string
   startedAt?: Date | string
@@ -418,6 +444,7 @@ export type SessionCreateWithoutEmployeeInput = {
   status?: $Enums.SessionStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  activityEvents?: Prisma.ActivityEventCreateNestedManyWithoutSessionInput
 }
 
 export type SessionUncheckedCreateWithoutEmployeeInput = {
@@ -427,6 +454,7 @@ export type SessionUncheckedCreateWithoutEmployeeInput = {
   status?: $Enums.SessionStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  activityEvents?: Prisma.ActivityEventUncheckedCreateNestedManyWithoutSessionInput
 }
 
 export type SessionCreateOrConnectWithoutEmployeeInput = {
@@ -468,6 +496,62 @@ export type SessionScalarWhereInput = {
   employeeId?: Prisma.StringFilter<"Session"> | string
 }
 
+export type SessionCreateWithoutActivityEventsInput = {
+  id?: string
+  startedAt?: Date | string
+  endedAt?: Date | string | null
+  status?: $Enums.SessionStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  employee: Prisma.EmployeeCreateNestedOneWithoutSessionsInput
+}
+
+export type SessionUncheckedCreateWithoutActivityEventsInput = {
+  id?: string
+  startedAt?: Date | string
+  endedAt?: Date | string | null
+  status?: $Enums.SessionStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  employeeId: string
+}
+
+export type SessionCreateOrConnectWithoutActivityEventsInput = {
+  where: Prisma.SessionWhereUniqueInput
+  create: Prisma.XOR<Prisma.SessionCreateWithoutActivityEventsInput, Prisma.SessionUncheckedCreateWithoutActivityEventsInput>
+}
+
+export type SessionUpsertWithoutActivityEventsInput = {
+  update: Prisma.XOR<Prisma.SessionUpdateWithoutActivityEventsInput, Prisma.SessionUncheckedUpdateWithoutActivityEventsInput>
+  create: Prisma.XOR<Prisma.SessionCreateWithoutActivityEventsInput, Prisma.SessionUncheckedCreateWithoutActivityEventsInput>
+  where?: Prisma.SessionWhereInput
+}
+
+export type SessionUpdateToOneWithWhereWithoutActivityEventsInput = {
+  where?: Prisma.SessionWhereInput
+  data: Prisma.XOR<Prisma.SessionUpdateWithoutActivityEventsInput, Prisma.SessionUncheckedUpdateWithoutActivityEventsInput>
+}
+
+export type SessionUpdateWithoutActivityEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumSessionStatusFieldUpdateOperationsInput | $Enums.SessionStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  employee?: Prisma.EmployeeUpdateOneRequiredWithoutSessionsNestedInput
+}
+
+export type SessionUncheckedUpdateWithoutActivityEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  startedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.EnumSessionStatusFieldUpdateOperationsInput | $Enums.SessionStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  employeeId?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
 export type SessionCreateManyEmployeeInput = {
   id?: string
   startedAt?: Date | string
@@ -484,6 +568,7 @@ export type SessionUpdateWithoutEmployeeInput = {
   status?: Prisma.EnumSessionStatusFieldUpdateOperationsInput | $Enums.SessionStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  activityEvents?: Prisma.ActivityEventUpdateManyWithoutSessionNestedInput
 }
 
 export type SessionUncheckedUpdateWithoutEmployeeInput = {
@@ -493,6 +578,7 @@ export type SessionUncheckedUpdateWithoutEmployeeInput = {
   status?: Prisma.EnumSessionStatusFieldUpdateOperationsInput | $Enums.SessionStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  activityEvents?: Prisma.ActivityEventUncheckedUpdateManyWithoutSessionNestedInput
 }
 
 export type SessionUncheckedUpdateManyWithoutEmployeeInput = {
@@ -505,6 +591,35 @@ export type SessionUncheckedUpdateManyWithoutEmployeeInput = {
 }
 
 
+/**
+ * Count Type SessionCountOutputType
+ */
+
+export type SessionCountOutputType = {
+  activityEvents: number
+}
+
+export type SessionCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  activityEvents?: boolean | SessionCountOutputTypeCountActivityEventsArgs
+}
+
+/**
+ * SessionCountOutputType without action
+ */
+export type SessionCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SessionCountOutputType
+   */
+  select?: Prisma.SessionCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * SessionCountOutputType without action
+ */
+export type SessionCountOutputTypeCountActivityEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ActivityEventWhereInput
+}
+
 
 export type SessionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -515,6 +630,8 @@ export type SessionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   updatedAt?: boolean
   employeeId?: boolean
   employee?: boolean | Prisma.EmployeeDefaultArgs<ExtArgs>
+  activityEvents?: boolean | Prisma.Session$activityEventsArgs<ExtArgs>
+  _count?: boolean | Prisma.SessionCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["session"]>
 
 export type SessionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -552,6 +669,8 @@ export type SessionSelectScalar = {
 export type SessionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "startedAt" | "endedAt" | "status" | "createdAt" | "updatedAt" | "employeeId", ExtArgs["result"]["session"]>
 export type SessionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   employee?: boolean | Prisma.EmployeeDefaultArgs<ExtArgs>
+  activityEvents?: boolean | Prisma.Session$activityEventsArgs<ExtArgs>
+  _count?: boolean | Prisma.SessionCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type SessionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   employee?: boolean | Prisma.EmployeeDefaultArgs<ExtArgs>
@@ -564,6 +683,7 @@ export type $SessionPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   name: "Session"
   objects: {
     employee: Prisma.$EmployeePayload<ExtArgs>
+    activityEvents: Prisma.$ActivityEventPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -968,6 +1088,7 @@ readonly fields: SessionFieldRefs;
 export interface Prisma__SessionClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   employee<T extends Prisma.EmployeeDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EmployeeDefaultArgs<ExtArgs>>): Prisma.Prisma__EmployeeClient<runtime.Types.Result.GetResult<Prisma.$EmployeePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  activityEvents<T extends Prisma.Session$activityEventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Session$activityEventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ActivityEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1402,6 +1523,30 @@ export type SessionDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Limit how many Sessions to delete.
    */
   limit?: number
+}
+
+/**
+ * Session.activityEvents
+ */
+export type Session$activityEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ActivityEvent
+   */
+  select?: Prisma.ActivityEventSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ActivityEvent
+   */
+  omit?: Prisma.ActivityEventOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ActivityEventInclude<ExtArgs> | null
+  where?: Prisma.ActivityEventWhereInput
+  orderBy?: Prisma.ActivityEventOrderByWithRelationInput | Prisma.ActivityEventOrderByWithRelationInput[]
+  cursor?: Prisma.ActivityEventWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ActivityEventScalarFieldEnum | Prisma.ActivityEventScalarFieldEnum[]
 }
 
 /**

@@ -27,3 +27,8 @@ export type Employee = Prisma.EmployeeModel
  * 
  */
 export type Session = Prisma.SessionModel
+/**
+ * Model ActivityEvent
+ * 
+ */
+export type ActivityEvent = Prisma.ActivityEventModel

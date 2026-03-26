@@ -15,3 +15,13 @@ export const SessionStatus = {
 } as const
 
 export type SessionStatus = (typeof SessionStatus)[keyof typeof SessionStatus]
+
+
+export const ActivityEventType = {
+  APP: 'APP',
+  WEB: 'WEB',
+  FILE: 'FILE',
+  KEYSTROKE_SUMMARY: 'KEYSTROKE_SUMMARY'
+} as const
+
+export type ActivityEventType = (typeof ActivityEventType)[keyof typeof ActivityEventType]
