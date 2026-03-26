@@ -68,8 +68,8 @@ export class ActivityEventsService {
         where: {
           sessionId,
           occurredAt: {
-            gte: from,
-            lte: to,
+            gte: from ? new Date(from) : undefined,
+            lte: to ? new Date(to) : undefined,
           },
           type: eventType
             ? {
@@ -96,8 +96,8 @@ export class ActivityEventsService {
         where: {
           sessionId,
           occurredAt: {
-            gte: from,
-            lte: to,
+            gte: from ? new Date(from) : undefined,
+            lte: to ? new Date(to) : undefined,
           },
           type: eventType
             ? {
