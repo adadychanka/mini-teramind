@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { ActivityEventDto, ActivityEventType, PaginationOutputDto } from '@repo/contracts';
+import { ActivityEventDto, PaginationOutputDto } from '@repo/contracts';
 import { Prisma } from 'generated/prisma/client';
 import { DEFAULT_PAGINATION_LIMIT } from 'src/common/pagination/limits';
 import { isForeignKeyConstraintViolationError } from 'src/common/prisma/prisma-error-helpers';
@@ -31,7 +31,7 @@ export class ActivityEventsService {
     try {
       const activityEvent = await this.prisma.activityEvent.create({
         data: {
-          type: createActivityEventDto.type as ActivityEventType,
+          type: createActivityEventDto.type,
           metadata: createActivityEventDto.metadata as Prisma.JsonObject,
           occurredAt: createActivityEventDto.occurredAt,
           sessionId: sessionId,
