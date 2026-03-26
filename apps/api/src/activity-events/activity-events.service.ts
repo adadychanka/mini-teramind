@@ -78,6 +78,18 @@ export class ActivityEventsService {
       },
       skip,
       take: limit,
+      orderBy: {
+        occurredAt: 'desc',
+      },
+      select: {
+        id: true,
+        type: true,
+        metadata: true,
+        sessionId: true,
+        occurredAt: true,
+        createdAt: true,
+        updatedAt: true,
+      },
     });
 
     return {
