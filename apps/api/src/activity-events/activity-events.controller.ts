@@ -9,6 +9,7 @@ import {
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
+import { ActivityEventType } from 'generated/prisma/enums';
 import { ActivityEventsService } from './activity-events.service';
 import { CreateActivityEventDto } from './dto/create-activity-event.dto';
 import { FindEventsInputDto } from './dto/find-events-input.dto';
@@ -49,18 +50,23 @@ export class ActivityEventsController {
   })
   @ApiQuery({
     type: String,
+    format: 'date-time',
     name: 'from',
     required: false,
     description: 'Start date',
+    example: '2026-03-26T10:00:00Z',
   })
   @ApiQuery({
     type: String,
+    format: 'date-time',
     name: 'to',
     required: false,
     description: 'End date',
+    example: '2026-03-26T10:00:00Z',
   })
   @ApiQuery({
     type: String,
+    enum: ActivityEventType,
     name: 'eventType',
     required: false,
     description: 'The type of activity event to filter by',
