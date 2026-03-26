@@ -36,6 +36,11 @@ export const isForeignKeyConstraintViolationError = (
   return isPrismaError(error, PRISMA_ERROR_CODES.FOREIGN_KEY_CONSTRAINT_VIOLATION);
 };
 
+/**
+ * Verify if the error is a record not found error.
+ * @param error - The error to check
+ * @returns True if the error is a record not found error, false otherwise
+ */
 export const isRecordNotFoundError = (
   error: unknown,
 ): error is Prisma.PrismaClientKnownRequestError => {

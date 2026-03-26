@@ -1,9 +1,13 @@
-import { IsDateString, IsNotEmpty, IsObject, IsString } from 'class-validator';
+import {
+  ActivityEventType,
+  CreateActivityEventDto as ICreateActivityEventDto,
+} from '@repo/contracts';
+import { IsDateString, IsEnum, IsNotEmpty, IsObject, IsString } from 'class-validator';
 
-export class CreateActivityEventDto {
-  @IsString()
+export class CreateActivityEventDto implements ICreateActivityEventDto {
+  @IsEnum(ActivityEventType)
   @IsNotEmpty()
-  eventType!: string;
+  type!: ActivityEventType;
 
   @IsString()
   @IsDateString()
@@ -12,5 +16,5 @@ export class CreateActivityEventDto {
 
   @IsObject()
   @IsNotEmpty()
-  metadata!: Record<string, any>;
+  metadata!: Record<string, unknown>;
 }
