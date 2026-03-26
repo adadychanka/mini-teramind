@@ -9,7 +9,6 @@ import {
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
-import { PaginationOutputDto } from '@repo/contracts';
 import { ActivityEventsService } from './activity-events.service';
 import { CreateActivityEventDto } from './dto/create-activity-event.dto';
 import { FindEventsInputDto } from './dto/find-events-input.dto';
@@ -72,7 +71,7 @@ export class ActivityEventsController {
   async findAll(
     @Param('sessionId') sessionId: string,
     @Query() findEventsInputDto: FindEventsInputDto,
-  ): Promise<PaginationOutputDto<object>> {
-    return await this.activityEventsService.findAllActivityEvents(sessionId, findEventsInputDto);
+  ) {
+    return this.activityEventsService.findAllActivityEvents(sessionId, findEventsInputDto);
   }
 }
