@@ -6,7 +6,8 @@ This folder holds **backend decision and behavior documentation** for the NestJS
 
 - [employees.md](employees.md) — Employees domain (create, list, get).
 - [sessions.md](sessions.md) — Work sessions (start, end, list by employee, get by id).
-- [schema-and-migrations.md](schema-and-migrations.md) — Prisma models and migration history for employee/session persistence.
+- [activity-events.md](activity-events.md) — Activity events (create, list by session).
+- [schema-and-migrations.md](schema-and-migrations.md) — Prisma models and migration history for employee/session/activity-event persistence.
 
 ## Source of truth and precedence
 
