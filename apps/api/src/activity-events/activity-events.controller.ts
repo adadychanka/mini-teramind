@@ -29,7 +29,7 @@ export class ActivityEventsController {
     @Param('sessionId') sessionId: string,
     @Body() createActivityEventDto: CreateActivityEventDto,
   ) {
-    return await this.activityEventsService.createActivityEvent(sessionId, createActivityEventDto);
+    return this.activityEventsService.createActivityEvent(sessionId, createActivityEventDto);
   }
 
   @Get('events')

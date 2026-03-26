@@ -56,6 +56,6 @@ export class EmployeeSessionsController {
     @Param('employeeId') employeeId: string,
     @Query() paginationInputDto: PaginationQueryDto,
   ): Promise<PaginationOutputDto<SessionDto>> {
-    return await this.sessionsService.findAllSessionsByEmployeeId(employeeId, paginationInputDto);
+    return this.sessionsService.findAllSessionsByEmployeeId(employeeId, paginationInputDto);
   }
 }
