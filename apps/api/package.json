@@ -6,6 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
+    "clean": "rm -rf dist",
     "prebuild": "prisma generate",
     "build": "nest build",
     "dev": "nest start --watch",
