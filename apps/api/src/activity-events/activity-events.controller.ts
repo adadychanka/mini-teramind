@@ -9,7 +9,6 @@ import {
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
-import { ActivityEventType } from '@repo/contracts';
 import { ActivityEventsService } from './activity-events.service';
 import { CreateActivityEventDto } from './dto/create-activity-event.dto';
 import { FindEventsInputDto } from './dto/find-events-input.dto';
@@ -61,12 +60,11 @@ export class ActivityEventsController {
     description: 'End date',
   })
   @ApiQuery({
-    enum: ActivityEventType,
-    enumName: 'ActivityEventType',
+    type: String,
     name: 'eventType',
     required: false,
     description: 'The type of activity event to filter by',
-    example: ActivityEventType.APP,
+    example: 'APP',
   })
   @ApiOkResponse({ description: 'Activity events retrieved successfully' })
   @ApiNotFoundResponse({ description: 'Session not found' })

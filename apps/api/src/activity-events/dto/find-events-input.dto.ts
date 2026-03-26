@@ -1,5 +1,5 @@
-import { ActivityEventType } from '@repo/contracts';
 import { IsDateString, IsEnum, IsOptional, IsString } from 'class-validator';
+import { ActivityEventType } from 'generated/prisma/enums';
 import { PaginationQueryDto } from 'src/common/pagination/pagination-query.dto';
 import { IsDateRangeValid } from 'src/common/validators/isDateRangeValidDecorator';
 
@@ -17,7 +17,7 @@ export class FindEventsInputDto extends PaginationQueryDto {
   @IsOptional()
   to?: string;
 
-  @IsEnum(ActivityEventType)
   @IsOptional()
+  @IsEnum(ActivityEventType)
   eventType?: ActivityEventType;
 }

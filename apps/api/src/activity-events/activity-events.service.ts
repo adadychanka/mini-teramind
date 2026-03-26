@@ -31,7 +31,7 @@ export class ActivityEventsService {
     try {
       const activityEvent = await this.prisma.activityEvent.create({
         data: {
-          type: createActivityEventDto.type,
+          type: createActivityEventDto.type as ActivityEventType,
           metadata: createActivityEventDto.metadata as Prisma.JsonObject,
           occurredAt: createActivityEventDto.occurredAt,
           sessionId: sessionId,
@@ -72,7 +72,7 @@ export class ActivityEventsService {
         },
         type: eventType
           ? {
-              equals: eventType as ActivityEventType,
+              equals: eventType,
             }
           : undefined,
       },
