@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
-import { CommandBus } from '@nestjs/cqrs';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import {
   ApiBadRequestResponse,
   ApiCreatedResponse,
@@ -11,17 +11,17 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { ActivityEventType } from 'generated/prisma/enums';
-import { ActivityEventsService } from './activity-events.service';
 import { CreateActivityEventCommand } from './commands/create-activity-event.command';
 import { CreateActivityEventDto } from './dto/create-activity-event.dto';
 import { FindEventsInputDto } from './dto/find-events-input.dto';
+import { FindActivityEventsQuery } from './queries/find-activity-events.query';
 
 @ApiTags('sessions')
 @Controller('sessions/:sessionId')
 export class ActivityEventsController {
   constructor(
-    private readonly activityEventsService: ActivityEventsService,
     private readonly commandBus: CommandBus,
+    private readonly queryBus: QueryBus,
   ) {}
 
   @Post('events')
@@ -91,6 +91,11 @@ export class ActivityEventsController {
     @Param('sessionId') sessionId: string,
     @Query() findEventsInputDto: FindEventsInputDto,
   ) {
-    return this.activityEventsService.findAllActivityEvents(sessionId, findEventsInputDto);
+    return this.queryBus.execute(
+      new FindActivityEventsQuery({
+        sessionId,
+        pagination: findEventsInputDto,
+      }),
+    );
   }
 }
