@@ -43,8 +43,9 @@ If the user only changed out-of-scope paths, say the skill does not apply unless
 |--------------------------|--------|
 | `apps/api/src/employees/**` | [docs/backend/employees.md](../../../docs/backend/employees.md) |
 | `apps/api/src/sessions/**` | [docs/backend/sessions.md](../../../docs/backend/sessions.md) |
+| `apps/api/src/activity-events/**` | [docs/backend/activity-events.md](../../../docs/backend/activity-events.md) |
 | `apps/api/prisma/**` | [docs/backend/schema-and-migrations.md](../../../docs/backend/schema-and-migrations.md) + cross-links from domain docs |
-| `packages/contracts/**` (employee, session, pagination) | Relevant sections in `employees.md` / `sessions.md` |
+| `packages/contracts/**` (employee, session, activity-events, pagination) | Relevant sections in `employees.md` / `sessions.md` / `activity-events.md` |
 
 Do **not** add new domain files under `docs/backend/` for modules that have no doc yet (e.g. `activity-events`) unless the user explicitly asks to expand scope or the file already exists.
 

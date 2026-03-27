@@ -10,6 +10,7 @@ The platform records employee activity over time. An **activity event** is a dis
 | `GET` | `/sessions/:sessionId/events` | Query: `page`, `limit`, optional `from`, `to`, `eventType` | `PaginationOutputDto<ActivityEventDto>`: `{ items, total, hasNextPage }` |
 
 Types: `@repo/contracts` (`ActivityEventDto`, `ActivityEventType`, `PaginationOutputDto`).
+Implementation uses CQRS (`CommandBus` / `QueryBus`) via `CreateActivityEventHandler` and `FindActivityEventsHandler`.
 
 ### Validation and errors
 
@@ -30,7 +31,7 @@ Types: `@repo/contracts` (`ActivityEventDto`, `ActivityEventType`, `PaginationOu
     - `eventType`: optional `ActivityEventType`
   - Date range validation: if both `from` and `to` are provided, the API enforces `from <= to` via `IsDateRangeValid` (`isDateRangeValid` returns true when either side is missing).
 
-- Errors (controller + service)
+- Errors (controller + handlers)
   - Create:
     - Missing session: **404** `NotFoundException('Session not found')`
       - This happens via an explicit `session.findUnique` check.
@@ -46,7 +47,7 @@ Activity events are stored in the Prisma model `ActivityEvent` (PostgreSQL table
 
 ### Mapping and contracts
 
-- `ActivityEventsService` maps Prisma rows to `ActivityEventDto` via `toActivityEventDto` (`activity-events.mapper.ts`).
+- `CreateActivityEventHandler` and `FindActivityEventsHandler` map Prisma rows to `ActivityEventDto` via `toActivityEventDto` (`activity-events.mapper.ts`).
 - `occurredAt`, `createdAt`, `updatedAt` are returned as ISO 8601 strings (`toISOString()`).
 - `metadata` normalization:
   - If `metadata` is a plain object, it is returned as-is.
@@ -62,4 +63,7 @@ Activity events are stored in the Prisma model `ActivityEvent` (PostgreSQL table
 - Query defaults vs DTO validation:
   - The controller Swagger marks `page` and `limit` as having defaults, but `PaginationQueryDto` requires both fields to be present (they are not `IsOptional()`), so requests that omit them will fail validation.
 - Path params: `sessionId` is not UUID-validated at the controller layer; it is used directly in Prisma queries.
+- Filter propagation:
+  - The controller forwards `from`, `to`, and `eventType` from `FindEventsInputDto` into `FindActivityEventsQuery` payload.
+  - `FindActivityEventsHandler` applies these fields in Prisma `where` (`occurredAt` range and `type` equality), so list filters are active as documented.
 
