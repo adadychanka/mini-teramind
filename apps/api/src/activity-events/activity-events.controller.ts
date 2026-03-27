@@ -94,6 +94,9 @@ export class ActivityEventsController {
     return this.queryBus.execute(
       new FindActivityEventsQuery({
         sessionId,
+        from: findEventsInputDto.from,
+        to: findEventsInputDto.to,
+        eventType: findEventsInputDto.eventType,
         pagination: findEventsInputDto,
       }),
     );
