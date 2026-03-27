@@ -1,0 +1,29 @@
+---
+description: CQRS command boundaries for NestJS command files.
+globs: apps/api/src/**/commands/*.ts
+alwaysApply: false
+---
+
+# CQRS Command Boundaries
+
+Commands are domain messages, not transport DTOs.
+
+- Do not pass Nest DTO classes into commands (`CreateXxxDto`, `UpdateXxxDto`).
+- Commands should carry explicit domain fields (or a small domain payload type), not HTTP-specific wrappers.
+- Keep commands free of validation decorators and Swagger decorators.
+- Avoid generic placeholder return types (e.g. `{ actionId: string }`) unless actually required by the workflow.
+- If a command returns data, use a meaningful contract/domain type (for example `ActivityEventDto`).
+
+## Example
+
+```ts
+// ❌ BAD
+new CreateActivityEventCommand(createActivityEventDto);
+
+// ✅ GOOD
+new CreateActivityEventCommand(sessionId, {
+  type,
+  occurredAt,
+  metadata,
+});
+```

@@ -1,4 +1,5 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { CommandBus } from '@nestjs/cqrs';
 import {
   ApiBadRequestResponse,
   ApiCreatedResponse,
@@ -11,13 +12,17 @@ import {
 } from '@nestjs/swagger';
 import { ActivityEventType } from 'generated/prisma/enums';
 import { ActivityEventsService } from './activity-events.service';
+import { CreateActivityEventCommand } from './commands/create-activity-event.command';
 import { CreateActivityEventDto } from './dto/create-activity-event.dto';
 import { FindEventsInputDto } from './dto/find-events-input.dto';
 
 @ApiTags('sessions')
 @Controller('sessions/:sessionId')
 export class ActivityEventsController {
-  constructor(private readonly activityEventsService: ActivityEventsService) {}
+  constructor(
+    private readonly activityEventsService: ActivityEventsService,
+    private readonly commandBus: CommandBus,
+  ) {}
 
   @Post('events')
   @ApiOperation({ summary: 'Create an activity event for a session' })
@@ -29,7 +34,14 @@ export class ActivityEventsController {
     @Param('sessionId') sessionId: string,
     @Body() createActivityEventDto: CreateActivityEventDto,
   ) {
-    return this.activityEventsService.createActivityEvent(sessionId, createActivityEventDto);
+    return this.commandBus.execute(
+      new CreateActivityEventCommand({
+        sessionId,
+        type: createActivityEventDto.type,
+        occurredAt: createActivityEventDto.occurredAt,
+        metadata: createActivityEventDto.metadata,
+      }),
+    );
   }
 
   @Get('events')
