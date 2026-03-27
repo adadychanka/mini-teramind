@@ -28,6 +28,15 @@ export class FindActivityEventsHandler implements IQueryHandler<FindActivityEven
       throw new NotFoundException('Session not found');
     }
 
+    const session = await this.prisma.session.findUnique({
+      where: {
+        id: sessionId,
+      },
+    });
+    if (!session) {
+      throw new NotFoundException('Session not found');
+    }
+
     const where: Prisma.ActivityEventWhereInput = {
       sessionId,
       occurredAt: {
