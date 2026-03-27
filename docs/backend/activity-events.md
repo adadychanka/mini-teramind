@@ -37,9 +37,10 @@ Implementation uses CQRS (`CommandBus` / `QueryBus`) via `CreateActivityEventHan
       - This happens via an explicit `session.findUnique` check.
       - It also happens if the insert hits a foreign key violation (`isForeignKeyConstraintViolationError` → same 404 message).
     - Other persistence/unknown errors are re-thrown and handled by Nest’s default error behavior (typically **500**).
-  - List:
-    - The implementation does not verify that `sessionId` exists. When there are no matching rows, it returns **200** with `{ items: [], total: 0, hasNextPage: false }` (even if the session is missing).
-    - DTO validation failures return **400** (Nest validation pipe).
+- List:
+  - Missing session: **404** `NotFoundException('Session not found')` via explicit `session.findUnique` pre-check in `FindActivityEventsHandler`.
+  - Existing session with no matching events: **200** with `{ items: [], total: 0, hasNextPage: false }`.
+  - DTO validation failures return **400** (Nest validation pipe).
 
 ### Persistence
 
