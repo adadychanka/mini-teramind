@@ -1,13 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { CqrsModule } from '@nestjs/cqrs';
-import { AppController } from './app.controller';
+import { ActivityEventsModule } from './activity-events/activity-events.module';
 import { AppService } from './app.service';
 import { EmployeesModule } from './employees/employees.module';
 import { HealthModule } from './health/health.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { SessionsModule } from './sessions/sessions.module';
-import { ActivityEventsModule } from './activity-events/activity-events.module';
 
 @Module({
   imports: [
@@ -19,7 +18,7 @@ import { ActivityEventsModule } from './activity-events/activity-events.module';
     SessionsModule,
     ActivityEventsModule,
   ],
-  controllers: [AppController],
+  controllers: [],
   providers: [AppService],
 })
 export class AppModule {}
