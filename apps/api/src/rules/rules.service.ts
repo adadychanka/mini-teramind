@@ -24,8 +24,30 @@ const mockedRuleDto = {
 export class RulesService {
   constructor(private readonly prisma: PrismaService) {}
 
-  create(createRuleDto: CreateRuleDto): Promise<RuleDto> {
-    return Promise.resolve(mockedRuleDto);
+  async create(createRuleDto: CreateRuleDto): Promise<RuleDto> {
+    const rule = await this.prisma.rule.create({
+      data: {
+        name: createRuleDto.name,
+        description: createRuleDto.description,
+        type: createRuleDto.type,
+        severity: createRuleDto.severity,
+        config: createRuleDto.config as Prisma.JsonObject,
+        active: createRuleDto.active,
+      },
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        type: true,
+        severity: true,
+        config: true,
+        active: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+
+    return toRuleDto(rule);
   }
 
   async findAll(findRulesInputDto: FindRulesInputDto): Promise<PaginationOutputDto<RuleDto>> {
@@ -42,6 +64,17 @@ export class RulesService {
         where,
         orderBy: {
           createdAt: 'desc',
+        },
+        select: {
+          id: true,
+          name: true,
+          description: true,
+          type: true,
+          severity: true,
+          config: true,
+          active: true,
+          createdAt: true,
+          updatedAt: true,
         },
       }),
       this.prisma.rule.count({
