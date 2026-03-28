@@ -31,7 +31,6 @@ export interface CreateRuleDto {
 export interface UpdateRuleDto {
   id?: string | undefined;
   name?: string;
-  type?: RuleType;
   severity?: RuleSeverity;
   config?: Record<string, unknown>;
   active?: boolean;
