@@ -1,12 +1,24 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { CreateRuleDto as ICreateRuleDto } from '@repo/contracts';
-import { IsBoolean, IsEnum, IsIn, IsNotEmpty, IsObject, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsEnum,
+  IsIn,
+  IsNotEmpty,
+  IsObject,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 import { RuleSeverity, RuleType } from 'generated/prisma/enums';
 
 export class CreateRuleDto implements Omit<ICreateRuleDto, 'type' | 'severity'> {
   @IsString()
   @IsNotEmpty()
   name!: string;
+
+  @IsString()
+  @IsOptional()
+  description?: string;
 
   @ApiProperty({
     type: String,
