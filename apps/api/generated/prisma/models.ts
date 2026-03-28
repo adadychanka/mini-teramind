@@ -11,4 +11,5 @@
 export type * from './models/Employee.js'
 export type * from './models/Session.js'
 export type * from './models/ActivityEvent.js'
+export type * from './models/Rule.js'
 export type * from './commonInputTypes.js'

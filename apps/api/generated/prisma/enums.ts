@@ -25,3 +25,20 @@ export const ActivityEventType = {
 } as const
 
 export type ActivityEventType = (typeof ActivityEventType)[keyof typeof ActivityEventType]
+
+
+export const RuleSeverity = {
+  LOW: 'LOW',
+  MEDIUM: 'MEDIUM',
+  HIGH: 'HIGH'
+} as const
+
+export type RuleSeverity = (typeof RuleSeverity)[keyof typeof RuleSeverity]
+
+
+export const RuleType = {
+  BLOCKED_WEBSITE: 'BLOCKED_WEBSITE',
+  AFTER_HOURS: 'AFTER_HOURS'
+} as const
+
+export type RuleType = (typeof RuleType)[keyof typeof RuleType]

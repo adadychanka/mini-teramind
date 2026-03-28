@@ -386,7 +386,8 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 export const ModelName = {
   Employee: 'Employee',
   Session: 'Session',
-  ActivityEvent: 'ActivityEvent'
+  ActivityEvent: 'ActivityEvent',
+  Rule: 'Rule'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -402,7 +403,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "employee" | "session" | "activityEvent"
+    modelProps: "employee" | "session" | "activityEvent" | "rule"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -628,6 +629,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Rule: {
+      payload: Prisma.$RulePayload<ExtArgs>
+      fields: Prisma.RuleFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.RuleFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RulePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.RuleFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RulePayload>
+        }
+        findFirst: {
+          args: Prisma.RuleFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RulePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.RuleFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RulePayload>
+        }
+        findMany: {
+          args: Prisma.RuleFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RulePayload>[]
+        }
+        create: {
+          args: Prisma.RuleCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RulePayload>
+        }
+        createMany: {
+          args: Prisma.RuleCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.RuleCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RulePayload>[]
+        }
+        delete: {
+          args: Prisma.RuleDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RulePayload>
+        }
+        update: {
+          args: Prisma.RuleUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RulePayload>
+        }
+        deleteMany: {
+          args: Prisma.RuleDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.RuleUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.RuleUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RulePayload>[]
+        }
+        upsert: {
+          args: Prisma.RuleUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RulePayload>
+        }
+        aggregate: {
+          args: Prisma.RuleAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateRule>
+        }
+        groupBy: {
+          args: Prisma.RuleGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RuleGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.RuleCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RuleCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -703,6 +778,21 @@ export const ActivityEventScalarFieldEnum = {
 } as const
 
 export type ActivityEventScalarFieldEnum = (typeof ActivityEventScalarFieldEnum)[keyof typeof ActivityEventScalarFieldEnum]
+
+
+export const RuleScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  type: 'type',
+  severity: 'severity',
+  config: 'config',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type RuleScalarFieldEnum = (typeof RuleScalarFieldEnum)[keyof typeof RuleScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -822,6 +912,41 @@ export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$Prisma
 
 
 /**
+ * Reference to a field of type 'RuleType'
+ */
+export type EnumRuleTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RuleType'>
+    
+
+
+/**
+ * Reference to a field of type 'RuleType[]'
+ */
+export type ListEnumRuleTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RuleType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'RuleSeverity'
+ */
+export type EnumRuleSeverityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RuleSeverity'>
+    
+
+
+/**
+ * Reference to a field of type 'RuleSeverity[]'
+ */
+export type ListEnumRuleSeverityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'RuleSeverity[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
  * Reference to a field of type 'Int'
  */
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -932,6 +1057,7 @@ export type GlobalOmitConfig = {
   employee?: Prisma.EmployeeOmit
   session?: Prisma.SessionOmit
   activityEvent?: Prisma.ActivityEventOmit
+  rule?: Prisma.RuleOmit
 }
 
 /* Types for Logging */
