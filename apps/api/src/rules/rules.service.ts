@@ -1,19 +1,20 @@
 import { Injectable } from '@nestjs/common';
-import { PaginationOutputDto, RuleDto, RuleSeverity, RuleType } from '@repo/contracts';
+import { PaginationOutputDto, RuleDto, RuleSeverity } from '@repo/contracts';
+import { RuleType } from 'generated/prisma/enums';
 import { CreateRuleDto } from './dto/create-rule.dto';
 import { FindRulesInputDto } from './dto/find-rules-input.dto';
 import { UpdateRuleDto } from './dto/update-rule.dto';
 
-const mockedRuleDto: RuleDto = {
+const mockedRuleDto = {
   id: '1',
   name: 'Rule 1',
-  type: RuleType.BLOCKED_WEBSITE,
-  severity: RuleSeverity.LOW,
+  type: RuleType,
+  severity: RuleSeverity,
   config: {},
   active: true,
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
-};
+} as unknown as RuleDto;
 
 @Injectable()
 export class RulesService {
