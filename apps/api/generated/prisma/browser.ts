@@ -32,3 +32,8 @@ export type Session = Prisma.SessionModel
  * 
  */
 export type ActivityEvent = Prisma.ActivityEventModel
+/**
+ * Model Rule
+ * 
+ */
+export type Rule = Prisma.RuleModel

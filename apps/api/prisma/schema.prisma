@@ -66,3 +66,26 @@ model ActivityEvent {
   @@index([sessionId])
   @@index([sessionId, occurredAt(sort: Desc)])
 }
+
+enum RuleSeverity {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum RuleType {
+  BLOCKED_WEBSITE
+  AFTER_HOURS
+}
+
+model Rule {
+  id          String       @id @default(uuid())
+  name        String       @db.VarChar(255)
+  description String?      @db.Text
+  type        RuleType
+  severity    RuleSeverity
+  config      Json
+  active      Boolean      @default(false)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
