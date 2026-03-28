@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { CreateRuleDto as ICreateRuleDto } from '@repo/contracts';
+import { Transform } from 'class-transformer';
 import {
   IsBoolean,
   IsEnum,
@@ -10,6 +11,7 @@ import {
   IsString,
 } from 'class-validator';
 import { RuleSeverity, RuleType } from 'generated/prisma/enums';
+import { toOptionalBoolean } from 'src/common/validators/to-optional-boolean';
 
 export class CreateRuleDto implements Omit<ICreateRuleDto, 'type' | 'severity'> {
   @IsString()
@@ -41,6 +43,7 @@ export class CreateRuleDto implements Omit<ICreateRuleDto, 'type' | 'severity'> 
   @IsNotEmpty()
   config!: Record<string, unknown>;
 
+  @Transform(({ value }) => toOptionalBoolean(value))
   @IsBoolean()
   @IsNotEmpty()
   active!: boolean;

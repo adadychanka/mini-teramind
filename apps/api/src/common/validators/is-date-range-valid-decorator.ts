@@ -5,7 +5,7 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
-import { isDateRangeValid } from './isDateRangeValid';
+import { isDateRangeValid } from './is-date-range-valid';
 
 const IS_DATE_RANGE_VALID_CONSTRAINT_NAME = 'isDateRangeValid';
 

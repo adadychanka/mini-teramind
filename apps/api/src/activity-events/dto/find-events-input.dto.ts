@@ -1,7 +1,7 @@
 import { IsDateString, IsEnum, IsOptional, IsString } from 'class-validator';
 import { ActivityEventType } from 'generated/prisma/enums';
 import { PaginationQueryDto } from 'src/common/pagination/pagination-query.dto';
-import { IsDateRangeValid } from 'src/common/validators/isDateRangeValidDecorator';
+import { IsDateRangeValid } from 'src/common/validators/is-date-range-valid-decorator';
 
 export class FindEventsInputDto extends PaginationQueryDto {
   @IsString()

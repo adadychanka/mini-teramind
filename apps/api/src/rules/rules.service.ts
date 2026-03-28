@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { PaginationOutputDto, RuleDto, RuleSeverity } from '@repo/contracts';
+import { PaginationOutputDto, RuleDto } from '@repo/contracts';
 import { Prisma } from 'generated/prisma/client';
-import { RuleType } from 'generated/prisma/enums';
 import { DEFAULT_PAGINATION_LIMIT } from 'src/common/pagination/limits';
 import { isRecordNotFoundError } from 'src/common/prisma/prisma-error-helpers';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -9,17 +8,6 @@ import { CreateRuleDto } from './dto/create-rule.dto';
 import { FindRulesInputDto } from './dto/find-rules-input.dto';
 import { UpdateRuleDto } from './dto/update-rule.dto';
 import { toRuleDto } from './rules.mapper';
-
-const mockedRuleDto = {
-  id: '1',
-  name: 'Rule 1',
-  type: RuleType,
-  severity: RuleSeverity,
-  config: {},
-  active: true,
-  createdAt: new Date().toISOString(),
-  updatedAt: new Date().toISOString(),
-} as unknown as RuleDto;
 
 @Injectable()
 export class RulesService {
