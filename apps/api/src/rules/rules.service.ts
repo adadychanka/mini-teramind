@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PaginationOutputDto, RuleDto, RuleSeverity } from '@repo/contracts';
 import { Prisma } from 'generated/prisma/client';
 import { RuleType } from 'generated/prisma/enums';
 import { DEFAULT_PAGINATION_LIMIT } from 'src/common/pagination/limits';
+import { isRecordNotFoundError } from 'src/common/prisma/prisma-error-helpers';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateRuleDto } from './dto/create-rule.dto';
 import { FindRulesInputDto } from './dto/find-rules-input.dto';
@@ -92,7 +93,26 @@ export class RulesService {
     };
   }
 
-  update(ruleId: string, updateRuleDto: UpdateRuleDto): Promise<RuleDto> {
-    return Promise.resolve(mockedRuleDto);
+  async update(ruleId: string, updateRuleDto: UpdateRuleDto): Promise<RuleDto> {
+    try {
+      const rule = await this.prisma.rule.update({
+        where: { id: ruleId },
+        data: {
+          name: updateRuleDto.name,
+          description: updateRuleDto.description,
+          severity: updateRuleDto.severity,
+          config: updateRuleDto.config as Prisma.JsonObject,
+          active: updateRuleDto.active,
+        },
+      });
+
+      return toRuleDto(rule);
+    } catch (error) {
+      if (isRecordNotFoundError(error)) {
+        throw new NotFoundException(`Rule ${ruleId} not found`);
+      }
+
+      throw error;
+    }
   }
 }
