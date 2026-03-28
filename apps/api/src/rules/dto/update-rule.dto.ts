@@ -5,7 +5,7 @@ import { CreateRuleDto } from './create-rule.dto';
 
 export class UpdateRuleDto
   extends OmitType(PartialType(CreateRuleDto), ['type'])
-  implements IUpdateRuleDto
+  implements Omit<IUpdateRuleDto, 'type' | 'severity'>
 {
   @IsUUID()
   @IsString()
