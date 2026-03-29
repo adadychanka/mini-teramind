@@ -1,23 +1,11 @@
 import { RuleType } from 'generated/prisma/enums';
-
-export type RuleConfigValidationResult = {
-  isValid: boolean;
-  errors: string[];
-};
-
-type Validator = (config: Record<string, unknown>) => RuleConfigValidationResult;
+import { validateBlockedWebsiteConfig } from './blocked-website-config-validator';
+import { RuleConfigValidationResult, Validator } from './types';
 
 const ruleConfigValidators: Record<RuleType, Validator> = {
   [RuleType.BLOCKED_WEBSITE]: validateBlockedWebsiteConfig,
   [RuleType.AFTER_HOURS]: validateAfterHoursConfig,
 };
-
-function validateBlockedWebsiteConfig(config: Record<string, unknown>): RuleConfigValidationResult {
-  return {
-    isValid: true,
-    errors: [],
-  };
-}
 
 function validateAfterHoursConfig(config: Record<string, unknown>): RuleConfigValidationResult {
   return {
