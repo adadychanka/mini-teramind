@@ -42,13 +42,6 @@ function validatePatternLabels(pattern: string): RuleConfigValidationResult | nu
         errors: ['Wildcard * may only appear as an entire label (e.g. *.example.com)'],
       };
     }
-    // Optional: stricter label rules (no leading/trailing hyphen, etc.)
-    if (!/^[a-z0-9-]+$/i.test(label)) {
-      return {
-        isValid: false,
-        errors: ['Each label may only contain letters, digits, and hyphens'],
-      };
-    }
   }
 
   return null;
