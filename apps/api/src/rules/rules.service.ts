@@ -8,7 +8,7 @@ import { CreateRuleDto } from './dto/create-rule.dto';
 import { FindRulesInputDto } from './dto/find-rules-input.dto';
 import { UpdateRuleDto } from './dto/update-rule.dto';
 import { toRuleDto } from './rules.mapper';
-import { validateRuleConfig } from './validation/validate-rule-config';
+import { validateRuleConfig } from './validation/rules-config-validation/validate-rule-config';
 
 @Injectable()
 export class RulesService {
