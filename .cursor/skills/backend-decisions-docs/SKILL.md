@@ -39,20 +39,21 @@ If the user only changed out-of-scope paths, say the skill does not apply unless
 
 ## Doc map
 
-| Code / artifacts touched | Update |
-|--------------------------|--------|
-| `apps/api/src/employees/**` | [docs/backend/employees.md](../../../docs/backend/employees.md) |
-| `apps/api/src/sessions/**` | [docs/backend/sessions.md](../../../docs/backend/sessions.md) |
-| `apps/api/src/activity-events/**` | [docs/backend/activity-events.md](../../../docs/backend/activity-events.md) |
-| `apps/api/prisma/**` | [docs/backend/schema-and-migrations.md](../../../docs/backend/schema-and-migrations.md) + cross-links from domain docs |
-| `packages/contracts/**` (employee, session, activity-events, pagination) | Relevant sections in `employees.md` / `sessions.md` / `activity-events.md` |
+| Code / artifacts touched                                                        | Update                                                                                                                 |
+| ------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `apps/api/src/employees/**`                                                     | [docs/backend/employees.md](../../../docs/backend/employees.md)                                                        |
+| `apps/api/src/sessions/**`                                                      | [docs/backend/sessions.md](../../../docs/backend/sessions.md)                                                          |
+| `apps/api/src/activity-events/**`                                               | [docs/backend/activity-events.md](../../../docs/backend/activity-events.md)                                            |
+| `apps/api/src/rules/**`                                                         | [docs/backend/rules.md](../../../docs/backend/rules.md)                                                                |
+| `apps/api/prisma/**`                                                            | [docs/backend/schema-and-migrations.md](../../../docs/backend/schema-and-migrations.md) + cross-links from domain docs |
+| `packages/contracts/**` (employee, session, activity-events, rules, pagination) | Relevant sections in `employees.md` / `sessions.md` / `activity-events.md` / `rules.md`                                |
 
-Do **not** add new domain files under `docs/backend/` for modules that have no doc yet (e.g. `activity-events`) unless the user explicitly asks to expand scope or the file already exists.
+Do **not** add new domain files under `docs/backend/` for modules that have no doc yet unless the user explicitly asks to expand scope or the file already exists (see [docs/backend/README.md](../../../docs/backend/README.md) for current set).
 
 ## Procedure
 
 1. Read [.cursor/rules/backend-docs-structure.mdc](../../rules/backend-docs-structure.mdc) — preserve required `##` / `###` headings and order.
-2. Identify which `docs/backend/*.md` files are affected from the user’s changed paths or from a full rescan of employees + sessions + prisma + contracts.
+2. Identify which `docs/backend/*.md` files are affected from the user’s changed paths or from a full rescan of employees, sessions, activity-events, rules, prisma, and contracts.
 3. Re-read current implementation; update **only** sections that are wrong or incomplete. Prefer cross-links over duplicating SQL or long SPEC excerpts.
 4. Follow [.cursor/rules/docs.mdc](../../rules/docs.mdc): no bloating root `README.md`; keep docs factual.
 

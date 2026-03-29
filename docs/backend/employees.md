@@ -6,11 +6,11 @@ The platform treats an **employee** as a monitored person whose activity is trac
 
 ### API surface
 
-| Method | Path | Body / query | Success response |
-|--------|------|--------------|------------------|
-| `POST` | `/employees` | JSON body: `name`, `email`, optional `department` | Single `EmployeeDto` (`201` implied by create; controller returns body as created resource per Nest convention) |
-| `GET` | `/employees` | Query: `page`, `limit` (required by `PaginationQueryDto`) | `PaginationOutputDto<EmployeeDto>`: `{ items, total, hasNextPage }` — `items` ordered by `createdAt` **descending** (newest first) |
-| `GET` | `/employees/:id` | Path: `id` | Single `EmployeeDto` |
+| Method | Path             | Body / query                                              | Success response                                                                                                                   |
+| ------ | ---------------- | --------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `POST` | `/employees`     | JSON body: `name`, `email`, optional `department`         | Single `EmployeeDto` (`201` implied by create; controller returns body as created resource per Nest convention)                    |
+| `GET`  | `/employees`     | Query: `page`, `limit` (required by `PaginationQueryDto`) | `PaginationOutputDto<EmployeeDto>`: `{ items, total, hasNextPage }` — `items` ordered by `createdAt` **descending** (newest first) |
+| `GET`  | `/employees/:id` | Path: `id`                                                | Single `EmployeeDto`                                                                                                               |
 
 Types: `@repo/contracts` (`EmployeeDto`, `CreateEmployeeDto`, `PaginationOutputDto`, `PaginationInputDto`).
 

@@ -6,12 +6,12 @@
 
 ### API surface
 
-| Method | Path | Body / query | Success response |
-|--------|------|--------------|------------------|
-| `POST` | `/employees/:employeeId/sessions` | No body; `employeeId` from path | `SessionDto` (new active session) |
-| `GET` | `/employees/:employeeId/sessions` | Query: `page`, `limit` | `PaginationOutputDto<SessionDto>` |
-| `PATCH` | `/sessions/:id` | No body; `id` from path (end session) | `SessionDto` |
-| `GET` | `/sessions/:id` | Path: `id` | `SessionDto` |
+| Method  | Path                              | Body / query                          | Success response                  |
+| ------- | --------------------------------- | ------------------------------------- | --------------------------------- |
+| `POST`  | `/employees/:employeeId/sessions` | No body; `employeeId` from path       | `SessionDto` (new active session) |
+| `GET`   | `/employees/:employeeId/sessions` | Query: `page`, `limit`                | `PaginationOutputDto<SessionDto>` |
+| `PATCH` | `/sessions/:id`                   | No body; `id` from path (end session) | `SessionDto`                      |
+| `GET`   | `/sessions/:id`                   | Path: `id`                            | `SessionDto`                      |
 
 **Note:** SPEC §3.2.1 lists `PATCH /sessions/:id/end` for ending a session. The implementation uses **`PATCH /sessions/:id`** (no `/end` suffix).
 

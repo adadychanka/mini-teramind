@@ -1,13 +1,15 @@
 ## Product context (vision)
+
 The platform records employee activity over time. An **activity event** is a discrete piece of activity that occurs within a session (for example: visiting a website, using an app, file operations, or keystroke summaries). This framing is described in [docs/specs/SPEC.md](../specs/SPEC.md). This file documents what the API implements today for recording and querying those events.
 
 ## Implemented behavior
+
 ### API surface
 
-| Method | Path | Body / query | Success response |
-|--------|------|--------------|------------------|
-| `POST` | `/sessions/:sessionId/events` | JSON body: `type`, `occurredAt`, `metadata` | `ActivityEventDto` |
-| `GET` | `/sessions/:sessionId/events` | Query: `page`, `limit`, optional `from`, `to`, `eventType` | `PaginationOutputDto<ActivityEventDto>`: `{ items, total, hasNextPage }` |
+| Method | Path                          | Body / query                                               | Success response                                                         |
+| ------ | ----------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------ |
+| `POST` | `/sessions/:sessionId/events` | JSON body: `type`, `occurredAt`, `metadata`                | `ActivityEventDto`                                                       |
+| `GET`  | `/sessions/:sessionId/events` | Query: `page`, `limit`, optional `from`, `to`, `eventType` | `PaginationOutputDto<ActivityEventDto>`: `{ items, total, hasNextPage }` |
 
 Types: `@repo/contracts` (`ActivityEventDto`, `ActivityEventType`, `PaginationOutputDto`).
 Implementation uses CQRS (`CommandBus` / `QueryBus`) via `CreateActivityEventHandler` and `FindActivityEventsHandler`.
@@ -67,4 +69,3 @@ Activity events are stored in the Prisma model `ActivityEvent` (PostgreSQL table
 - Filter propagation:
   - The controller forwards `from`, `to`, and `eventType` from `FindEventsInputDto` into `FindActivityEventsQuery` payload.
   - `FindActivityEventsHandler` applies these fields in Prisma `where` (`occurredAt` range and `type` equality), so list filters are active as documented.
-

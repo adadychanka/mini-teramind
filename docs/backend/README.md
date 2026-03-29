@@ -1,13 +1,14 @@
 ## Purpose
 
-This folder holds **backend decision and behavior documentation** for the NestJS API (`apps/api`): what the employees and sessions domains do today, how they interact with PostgreSQL, and how that relates to the product specs. Audience: engineers working on or integrating with the API.
+This folder holds **backend decision and behavior documentation** for the NestJS API (`apps/api`): what each implemented domain does today, how it interacts with PostgreSQL, and how that relates to the product specs. Audience: engineers working on or integrating with the API.
 
 ## Contents
 
 - [employees.md](employees.md) — Employees domain (create, list, get).
 - [sessions.md](sessions.md) — Work sessions (start, end, list by employee, get by id).
 - [activity-events.md](activity-events.md) — Activity events (create, list by session).
-- [schema-and-migrations.md](schema-and-migrations.md) — Prisma models and migration history for employee/session/activity-event persistence.
+- [rules.md](rules.md) — Rules (create, list, update; config validation).
+- [schema-and-migrations.md](schema-and-migrations.md) — Prisma models and migration history (employees, sessions, activity events, rules).
 
 ## Source of truth and precedence
 
