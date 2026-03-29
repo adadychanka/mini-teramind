@@ -8,6 +8,7 @@ import {
   validate,
   ValidateNested,
 } from 'class-validator';
+import { IsDateRangeValid } from 'src/common/validators/is-date-range-valid-decorator';
 import { RuleConfigValidationResult } from './types';
 import { flattenValidationErrors } from './utils';
 
@@ -25,13 +26,16 @@ class AfterHoursWorkHours {
   @IsString()
   @IsNotEmpty()
   @IsMilitaryTime()
+  @IsDateRangeValid('start', 'end', {
+    message: 'End time must be after start time',
+  })
   end!: string;
 }
 
 /**
  * Represents the after-hours configuration.
  */
-class AfterHoursConfig {
+export class AfterHoursConfig {
   @Expose()
   @IsObject()
   @IsNotEmpty()

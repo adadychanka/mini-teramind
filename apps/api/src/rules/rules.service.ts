@@ -8,7 +8,7 @@ import { CreateRuleDto } from './dto/create-rule.dto';
 import { FindRulesInputDto } from './dto/find-rules-input.dto';
 import { UpdateRuleDto } from './dto/update-rule.dto';
 import { validateRuleConfig } from './rule-config-validation/validate-rule-config';
-import { toRuleDto } from './rules.mapper';
+import { normalizeRuleConfig, toRuleConfig, toRuleDto } from './rules.mapper';
 
 @Injectable()
 export class RulesService {
@@ -29,7 +29,7 @@ export class RulesService {
         description: createRuleDto.description,
         type: createRuleDto.type,
         severity: createRuleDto.severity,
-        config: createRuleDto.config as Prisma.JsonObject,
+        config: normalizeRuleConfig(createRuleDto.type, createRuleDto.config) as Prisma.JsonObject,
         active: createRuleDto.active,
       },
       select: {
@@ -92,25 +92,27 @@ export class RulesService {
 
   async update(ruleId: string, updateRuleDto: UpdateRuleDto): Promise<RuleDto> {
     // If the config is being updated, validate it
-    if (updateRuleDto.config) {
-      const existingRule = await this.prisma.rule.findUnique({
-        where: { id: ruleId },
-        select: {
-          id: true,
-          type: true,
-        },
-      });
-      if (!existingRule) {
-        throw new NotFoundException(`Rule ${ruleId} not found`);
-      }
+    const existingRule = await this.prisma.rule.findUnique({
+      where: { id: ruleId },
+      select: {
+        id: true,
+        type: true,
+        config: true,
+      },
+    });
+    if (!existingRule) {
+      throw new NotFoundException(`Rule ${ruleId} not found`);
+    }
 
-      const validationResult = await validateRuleConfig(existingRule.type, updateRuleDto.config);
-      if (!validationResult.isValid) {
-        throw new BadRequestException({
-          message: 'Invalid rule configuration',
-          errors: validationResult.errors,
-        });
-      }
+    const validationResult = await validateRuleConfig(
+      existingRule.type,
+      updateRuleDto.config ?? {},
+    );
+    if (!validationResult.isValid) {
+      throw new BadRequestException({
+        message: 'Invalid rule configuration',
+        errors: validationResult.errors,
+      });
     }
 
     try {
@@ -120,8 +122,22 @@ export class RulesService {
           name: updateRuleDto.name,
           description: updateRuleDto.description,
           severity: updateRuleDto.severity,
-          config: updateRuleDto.config as Prisma.JsonObject,
+          config: normalizeRuleConfig(
+            existingRule.type,
+            updateRuleDto.config ?? toRuleConfig(existingRule.config),
+          ) as Prisma.JsonObject,
           active: updateRuleDto.active,
+        },
+        select: {
+          id: true,
+          name: true,
+          description: true,
+          type: true,
+          severity: true,
+          config: true,
+          active: true,
+          createdAt: true,
+          updatedAt: true,
         },
       });
 
