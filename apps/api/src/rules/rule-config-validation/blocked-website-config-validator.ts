@@ -1,6 +1,6 @@
 import { RuleConfigValidationResult } from './types';
 
-type BlockedWebsiteConfig = {
+export type BlockedWebsiteConfig = {
   pattern: string;
 };
 
@@ -55,6 +55,13 @@ export async function validateBlockedWebsiteConfig(
     return Promise.resolve({
       isValid: false,
       errors: ['Pattern is required'],
+    });
+  }
+
+  if (typeof blockedWebsiteConfig.pattern !== 'string') {
+    return Promise.resolve({
+      isValid: false,
+      errors: ['Pattern must be a string'],
     });
   }
 

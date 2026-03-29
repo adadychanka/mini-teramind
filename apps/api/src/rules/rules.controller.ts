@@ -51,7 +51,6 @@ export class RulesController {
     type: Boolean,
     required: false,
     description: 'Filter rules by active status',
-    default: true,
   })
   async findAll(@Query() findRulesInputDto: FindRulesInputDto) {
     return this.rulesService.findAll(findRulesInputDto);

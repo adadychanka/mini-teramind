@@ -12,6 +12,7 @@ export enum RuleType {
 export interface RuleDto {
   id: string;
   name: string;
+  description?: string;
   type: RuleType;
   severity: RuleSeverity;
   config: Record<string, unknown>;
@@ -23,6 +24,7 @@ export interface RuleDto {
 export interface CreateRuleDto {
   name: string;
   type: RuleType;
+  description?: string;
   severity: RuleSeverity;
   config: Record<string, unknown>;
   active: boolean;
@@ -31,6 +33,7 @@ export interface CreateRuleDto {
 export interface UpdateRuleDto {
   id?: string | undefined;
   name?: string;
+  description?: string;
   severity?: RuleSeverity;
   config?: Record<string, unknown>;
   active?: boolean;
