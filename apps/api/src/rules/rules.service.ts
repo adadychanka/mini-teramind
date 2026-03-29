@@ -7,15 +7,15 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateRuleDto } from './dto/create-rule.dto';
 import { FindRulesInputDto } from './dto/find-rules-input.dto';
 import { UpdateRuleDto } from './dto/update-rule.dto';
+import { validateRuleConfig } from './rule-config-validation/validate-rule-config';
 import { toRuleDto } from './rules.mapper';
-import { validateRuleConfig } from './validation/rules-config-validation/validate-rule-config';
 
 @Injectable()
 export class RulesService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createRuleDto: CreateRuleDto): Promise<RuleDto> {
-    const validationResult = validateRuleConfig(createRuleDto.type, createRuleDto.config);
+    const validationResult = await validateRuleConfig(createRuleDto.type, createRuleDto.config);
     if (!validationResult.isValid) {
       throw new BadRequestException({
         message: 'Invalid rule configuration',
@@ -104,7 +104,7 @@ export class RulesService {
         throw new NotFoundException(`Rule ${ruleId} not found`);
       }
 
-      const validationResult = validateRuleConfig(existingRule.type, updateRuleDto.config);
+      const validationResult = await validateRuleConfig(existingRule.type, updateRuleDto.config);
       if (!validationResult.isValid) {
         throw new BadRequestException({
           message: 'Invalid rule configuration',

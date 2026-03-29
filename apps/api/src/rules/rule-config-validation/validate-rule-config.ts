@@ -1,24 +1,19 @@
 import { RuleType } from 'generated/prisma/enums';
+import { validateAfterHoursConfig } from './after-hours-config-validator';
 import { validateBlockedWebsiteConfig } from './blocked-website-config-validator';
-import { RuleConfigValidationResult, Validator } from './types';
+import { RuleConfigValidationResult, RuleConfigValidator } from './types';
 
-const ruleConfigValidators: Record<RuleType, Validator> = {
+const ruleConfigValidators: Record<RuleType, RuleConfigValidator> = {
   [RuleType.BLOCKED_WEBSITE]: validateBlockedWebsiteConfig,
   [RuleType.AFTER_HOURS]: validateAfterHoursConfig,
 };
 
-function validateAfterHoursConfig(config: Record<string, unknown>): RuleConfigValidationResult {
-  return {
-    isValid: true,
-    errors: [],
-  };
-}
-
-export function validateRuleConfig(
+export async function validateRuleConfig(
   ruleType: RuleType,
   ruleConfig: Record<string, unknown>,
-): RuleConfigValidationResult {
+): Promise<RuleConfigValidationResult> {
   const validator = ruleConfigValidators[ruleType];
+
   if (!validator) {
     return {
       isValid: false,
@@ -26,5 +21,7 @@ export function validateRuleConfig(
     };
   }
 
-  return validator(ruleConfig);
+  const validationResult = await validator(ruleConfig);
+
+  return validationResult;
 }

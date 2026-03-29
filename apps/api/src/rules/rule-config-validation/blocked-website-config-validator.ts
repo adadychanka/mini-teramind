@@ -47,39 +47,39 @@ function validatePatternLabels(pattern: string): RuleConfigValidationResult | nu
   return null;
 }
 
-export function validateBlockedWebsiteConfig(
+export async function validateBlockedWebsiteConfig(
   config: Record<string, unknown>,
-): RuleConfigValidationResult {
+): Promise<RuleConfigValidationResult> {
   const blockedWebsiteConfig = config as BlockedWebsiteConfig;
   if (!blockedWebsiteConfig.pattern) {
-    return {
+    return Promise.resolve({
       isValid: false,
       errors: ['Pattern is required'],
-    };
+    });
   }
 
   const trimmedPattern = blockedWebsiteConfig.pattern.trim();
   if (trimmedPattern.length < MIN_LENGTH || trimmedPattern.length > MAX_LENGTH) {
-    return {
+    return Promise.resolve({
       isValid: false,
       errors: ['Pattern must be between 3 and 255 characters'],
-    };
+    });
   }
 
   if (!validateAllowedPatternChars(trimmedPattern)) {
-    return {
+    return Promise.resolve({
       isValid: false,
       errors: ['Pattern contains invalid characters'],
-    };
+    });
   }
 
   const labelValidationResult = validatePatternLabels(trimmedPattern);
   if (labelValidationResult) {
-    return labelValidationResult;
+    return Promise.resolve(labelValidationResult);
   }
 
-  return {
+  return Promise.resolve({
     isValid: true,
     errors: [],
-  };
+  });
 }
